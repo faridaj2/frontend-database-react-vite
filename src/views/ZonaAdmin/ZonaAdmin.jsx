@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import DashboardTemplate from '../../components/DashboardTemplate'
 import { Button, Card, CardBody, CardHeader, Chip, Divider, Input, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
 import AuthUser from '../../utils/AuthUser';
@@ -88,13 +88,13 @@ function ZonaAdmin() {
             access: JSON.stringify(selected)
         }
         http.post('/api/change-permission', data)
-            .then(res => {
+            .then(() => {
                 toastSuccess('Selesai')
                 setIsLoading(false)
                 getUser()
                 onClose()
             })
-            .catch(res => {
+            .catch(() => {
                 toastInfo('Terjadi Kesalahan')
                 setIsLoading(false)
                 getUser()
@@ -128,7 +128,7 @@ function ZonaAdmin() {
     const saveData = (data, type, save) => {
         const value = JSON.stringify(data)
         http.post(`/api/save-settings-data/${type}`, value)
-            .then(res => {
+            .then(() => {
                 save(false)
                 save(false)
                 toastSuccess('Success')
@@ -314,7 +314,8 @@ function ZonaAdmin() {
                                             <Checkbox value="user">User</Checkbox>
                                             <Checkbox value="admin">Admin</Checkbox>
                                             <Checkbox value="keuangan">Keuangan</Checkbox>
-                                            <Checkbox value="penitipan">penitipan</Checkbox>
+                                            <Checkbox value="penitipan">Penitipan</Checkbox>
+                                            <Checkbox value="keamanan">Keamanan</Checkbox>
                                         </CheckboxGroup>
                                         <p className="text-default-500 text-small">Selected: {selected.join(", ")}</p>
                                     </div>
@@ -357,13 +358,13 @@ function ModalConfirmDelete({ isModalOpen, setModalOpen, account, toastInfo, toa
         setIsLoading(true)
         const id = account.id
         http.post('/api/delete-account', { id })
-            .then(res => {
+            .then(() => {
                 setIsLoading(false)
                 toastSuccess('Berhasil menghapus akun')
                 getUser()
                 onClose()
             })
-            .catch(res => {
+            .catch(() => {
                 toastInfo('Terjadi kesalahan')
                 setIsLoading(false)
                 onClose()
@@ -422,13 +423,13 @@ const AddUser = ({ modalCreate, setModalCreate, toastSuccess, getUser, toastInfo
             password: password
         }
         http.post('/api/auth/register', data)
-            .then(res => {
+            .then(() => {
                 getUser()
                 toastSuccess('Pendaftaran Berhasil')
                 setIsLoading(false)
                 onClose()
             })
-            .catch(res => {
+            .catch(() => {
                 setIsLoading(false)
                 onClose()
                 toastInfo('Terjadi Kesalahan')

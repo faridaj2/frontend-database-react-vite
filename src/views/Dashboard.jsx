@@ -1,20 +1,52 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import DashboardTemplate from '../components/DashboardTemplate'
-import { Card, CardBody, CardHeader, Divider } from '@nextui-org/react'
+import { Card, CardBody, CardHeader, Divider, Select, SelectItem } from '@nextui-org/react'
 import AuthUser from '../utils/AuthUser'
+import ChartComponent from '../components/Dashboard/ChartComponent'
 
 function Dashboard() {
     const { http } = AuthUser()
     const [data, setData] = useState()
+    const [year, setYear] = useState();
+    const [arrayYear, setArrayYear] = useState()
+
     useEffect(() => {
         document.title = 'Dashboard'
         getDashboardData()
+        generateYear()
     }, [])
     const getDashboardData = () => {
         http.get('/api/get-dashboard-data')
             .then(res => setData(res.data))
             .catch(res => console.log(res))
+    }
+    const generateYear = () => {
+        const currentYear = new Date().getFullYear();
+
+        // Membuat array dari tahun sekarang ke tahun 2017
+        const yearsArray = [];
+        for (let year = currentYear; year >= 2017; year--) {
+            yearsArray.push(year);
+        }
+        setArrayYear(yearsArray)
+        setYear({ startYear: yearsArray[5].toString(), endYear: yearsArray[0].toString() });
+
+
+    }
+    const changeStart = e => {
+        const val = e.target.value
+        setYear(prevYear => ({
+            ...prevYear,
+            startYear: val
+        }))
+    }
+    const changeEnd = e => {
+        const val = e.target.value
+        setYear(prevYear => ({
+            ...prevYear,
+            endYear: val
+        }))
     }
 
     return (
@@ -26,7 +58,7 @@ function Dashboard() {
                         <Card className='w-full shadow-xl shadow-violet-700/20'>
                             <CardHeader>
                                 <span className='text-tiny font-semibold'>
-                                    Jumlah Seluruh Santriss
+                                    Jumlah Seluruh Santri
                                 </span>
                             </CardHeader>
                             <Divider />
@@ -112,6 +144,23 @@ function Dashboard() {
                             </CardBody>
                         </Card>
                     </div>
+                </div>
+                <div className='bg-white z-50'>
+                    <div className='flex mt-4 justify-end'>
+                        <div className='w-full max-w-sm flex gap-2'>
+                            <Select size='sm' color='primary' variant='flat' label="Tahun Awal" onChange={changeStart} selectedKeys={[year?.startYear]}>
+                                {arrayYear?.map(item => (
+                                    <SelectItem key={`${item}`} value={item} textValue={item}>{item}</SelectItem>
+                                ))}
+                            </Select>
+                            <Select size='sm' color='primary' variant='flat' label="Tahun Akhir" onChange={changeEnd} selectedKeys={[year?.endYear]}>
+                                {arrayYear?.map(item => (
+                                    <SelectItem key={`${item}`} value={item} textValue={item}>{item}</SelectItem>
+                                ))}
+                            </Select>
+                        </div>
+                    </div>
+                    <ChartComponent startYear={year?.startYear} endYear={year?.endYear} />
                 </div>
 
             </div>

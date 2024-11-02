@@ -19,7 +19,6 @@ function DetailUserPayment() {
     const { http } = AuthUser()
     const { paymentId, siswaId } = useParams()
     const { changeDateFormat, addComa, generateArrayMonth } = AllUtils()
-    const navigate = useNavigate()
 
     // Modal State
     const [detailModal, setModalDetail] = useState(false)
@@ -33,17 +32,28 @@ function DetailUserPayment() {
 
     // Get Data
     useEffect(() => {
-        document.title = "Detail Pembayarn Siswa"
+        document.title = "Detail Pembayaran Siswa"
         getData()
         getSiswa()
         getIncome()
     }, [])
     useEffect(() => {
         if (income && data.arrayMonth) {
-            if (income.length > 0 && data.arrayMonth.length > 0) {
-                const array1 = data.arrayMonth
-                const array2 = income
-                http.post(`/api/set-status-payment/${paymentId}/${siswaId}`, { status: chekArray(array1, array2) })
+
+            if (data.type === 'Kontan') {
+                const priceKontan = income[0].price
+                const priceBulanan = data.arrayMonth[0].price
+                if (priceKontan < priceBulanan) {
+                    http.post(`/api/set-status-payment/${paymentId}/${siswaId}`, { status: false })
+                } else if (priceKontan >= priceBulanan) {
+                    http.post(`/api/set-status-payment/${paymentId}/${siswaId}`, { status: true })
+                }
+            } else {
+                if (income.length > 0 && data.arrayMonth.length > 0) {
+                    const array1 = data.arrayMonth
+                    const array2 = income
+                    http.post(`/api/set-status-payment/${paymentId}/${siswaId}`, { status: chekArray(array1, array2) })
+                }
             }
         }
     }, [income])
@@ -66,19 +76,19 @@ function DetailUserPayment() {
     const getSiswa = () => {
         http.get(`/api/get-data-siswa/${siswaId}/${paymentId}`)
             .then(res => {
-                if (res.data.status === 'ok') {
-                    setSiswa(res.data.data)
+                // console.log(res.data)
+                if (res) {
+                    setSiswa(res.data)
                 } else {
                     throw new Error('Error')
                 }
             })
-            .catch(res => console.log(res))
+            .catch()
     }
 
     const getData = () => {
         http.get(`/api/get-payment/${paymentId}`)
             .then(res => {
-                console.log(res)
                 const data = res.data.data
                 const d = {
                     name: data.payment_name,
@@ -231,7 +241,7 @@ function DetailUserPayment() {
                 )}
             </div>
             <div className='mt-5'>
-                <div className='font-medium text-2xl mb-2 text-violet-700' >Detail Pembayaran <br /> <Link to={`/dashboard/data-santri/detail/${siswa?.nis}`}>{siswa?.nama_siswa}</Link></div>
+                <div className='font-medium text-2xl mb-2 text-violet-700' >Detail Pembayaran <Link className='underline' to={`/dashboard/data-santri/detail/${siswa?.nis}`}>{siswa?.nama_siswa}</Link></div>
                 <div>
                     <Table isStriped aria-label='table-siswa'>
                         <TableHeader>

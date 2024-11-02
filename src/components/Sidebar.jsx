@@ -1,24 +1,24 @@
-import React from 'react'
-import { Divider } from '@nextui-org/react'
+import { Avatar, Divider } from '@nextui-org/react'
 import { motion } from 'framer-motion';
 
 // Icon
 import { RxDashboard } from "react-icons/rx";
 import { IoIosArrowForward, IoMdPeople } from "react-icons/io";
 import { MdAdminPanelSettings } from "react-icons/md";
-import { FaDashcube } from "react-icons/fa"
 import { FaMoneyBillWave } from "react-icons/fa6"
 import { TbLogout } from "react-icons/tb"
 import { HiOutlineBanknotes } from "react-icons/hi2"
+import { GoLaw } from "react-icons/go"
 
 import { RiMenu3Fill } from "react-icons/ri"
+import { CiWifiOn, CiWifiOff } from "react-icons/ci";
 import { Button } from '@nextui-org/react';
 
 import { useLocation } from 'react-router-dom';
 
 import { useNavigate } from 'react-router-dom';
 import AuthUser from '../utils/AuthUser';
-function Sidebar({ nav, setNav }) {
+function Sidebar({ nav, setNav, isOnline }) {
     let location = useLocation()
 
     const { user, logout } = AuthUser()
@@ -51,10 +51,17 @@ function Sidebar({ nav, setNav }) {
             <div className=''>
                 <div className='flex items-center gap-2 justify-between '>
                     <div className='flex justify-start items-center gap-2'>
-                        <div className='text-2xl rounded outline outline-1 outline-white shadow p-2 '><FaDashcube /></div>
+                        <div className='text-2xl rounded outline outline-1 outline-white shadow p-2 '><Avatar src='/logo.png' isBordered color='primary' /></div>
                         <div>
-                            <h1 className='font-semibold uppercase'>Dashboard</h1>
-                            <p className='text-xs  font-semibold'>Darsta</p>
+                            <h1 className='font-semibold uppercase'>SantriHub</h1>
+                            <p className='text-xs  font-semibold'>{user.name}</p>
+                            <div>
+                                {isOnline ? (
+                                    <CiWifiOn />
+                                ) : (
+                                    <CiWifiOff />
+                                )}
+                            </div>
                         </div>
                     </div>
                     <div>
@@ -69,7 +76,8 @@ function Sidebar({ nav, setNav }) {
                     <button className={`flex gap-2 items-center  hover:bg-violet-500 rounded-md hover:text-white transition-all ease-in-out p-2 ${getClass(undefined)}`} onClick={() => handleClick('/dashboard')}><IoIosArrowForward className='text-sm' /> <RxDashboard /> <span className='font-semibold  text-sm'>Dashboard</span></button>
                     <button className={`flex gap-2 items-center  hover:bg-violet-500 rounded-md hover:text-white transition-all ease-in-out p-2 ${getClass('data-santri')}`} onClick={() => handleClick('/dashboard/data-santri')}><IoIosArrowForward className='text-sm' /> <IoMdPeople /> <span className='font-semibold text-sm'>Data Santri</span></button>
                     <button className={`flex gap-2 items-center  hover:bg-violet-500 rounded-md hover:text-white transition-all ease-in-out p-2 ${getClass('payment')} ` + (getRole('keuangan'))} onClick={() => handleClick('/dashboard/payment')}><IoIosArrowForward className='text-sm' /> <FaMoneyBillWave /> <span className='font-semibold text-sm'>Keuangan</span></button>
-                    <button className={`flex gap-2 items-center  hover:bg-violet-500 rounded-md hover:text-white transition-all ease-in-out p-2 ${getClass('penitipan')} ` + (getRole('penitipan'))} onClick={() => handleClick('/dashboard/penitipan')}><IoIosArrowForward className='text-sm' /> <HiOutlineBanknotes /> <span className='font-semibold text-sm'>Penitipan</span></button>
+                    <button className={`flex gap-2 items-center  hover:bg-violet-500 rounded-md hover:text-white transition-all ease-in-out p-2 ${getClass('penitipan')} ` + (getRole('penitipan'))} onClick={() => handleClick('/dashboard/penitipan')}><IoIosArrowForward className='text-sm' /> <HiOutlineBanknotes /> <span className='font-semibold text-sm'>Uang Saku</span></button>
+                    <button className={`flex gap-2 items-center  hover:bg-violet-500 rounded-md hover:text-white transition-all ease-in-out p-2 ${getClass('keamanan')} ` + (getRole('keamanan'))} onClick={() => handleClick('/dashboard/keamanan')}><IoIosArrowForward className='text-sm' /> <GoLaw /> <span className='font-semibold text-sm'>Keamanan</span></button>
                     <button className={`flex gap-2 items-center  hover:bg-violet-500 rounded-md hover:text-white transition-all ease-in-out p-2 ${getClass('zona-admin')} ` + (getRole('admin'))} onClick={() => handleClick('/dashboard/zona-admin')}><IoIosArrowForward className='text-sm' /> <MdAdminPanelSettings /> <span className='font-semibold text-sm'>Zona Admin</span></button>
                     <button className={`flex gap-2 items-center  hover:bg-violet-500 rounded-md hover:text-white transition-all ease-in-out p-2 ')}`} onClick={logout}><IoIosArrowForward className='text-sm' /> <TbLogout /> <span className='font-semibold text-sm'>Log Out</span></button>
                 </div>

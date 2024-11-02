@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Spinner } from "@nextui-org/react";
 import JsBarcode from 'jsbarcode';
 
@@ -76,8 +76,8 @@ const IdCard = ({ template, photo, data, isDownload, setIsDownload }) => {
         const barcode = document.createElement("canvas")
         JsBarcode(barcode, data?.nis, {
             displayValue: false,
-            width: 10,
-            height: 140,
+            width: 6,
+            height: 70,
             background: "transparent"
         })
         const base64barcode = barcode.toDataURL()
@@ -96,10 +96,10 @@ const IdCard = ({ template, photo, data, isDownload, setIsDownload }) => {
             imgPhoto.src = `data:image/jpeg;base64,${photo}`
             imgPhoto.onload = () => {
                 // Calculate position and size for rounded image
-                const x = 90;
-                const y = 450;
-                const width = 470;
-                const height = 570;
+                const x = 33;
+                const y = 227;
+                const width = 205;
+                const height = 270;
                 const radius = 30;
 
                 // Draw rounded image
@@ -124,22 +124,54 @@ const IdCard = ({ template, photo, data, isDownload, setIsDownload }) => {
             const imgBarcode = new Image()
             imgBarcode.src = base64barcode
             imgBarcode.onload = () => {
-                ctx.drawImage(imgBarcode, 90, 1050)
+                ctx.drawImage(imgBarcode, 29, 516)
             }
 
             // Add text
-            ctx.font = "bold 50px Arial";
+            ctx.font = "bold 24px Arial";
             ctx.fillStyle = "black";
             // NIS
-            ctx.fillText(data?.nis, 1130, 620);
+            ctx.fillText(': ' + data?.nis, 474, 291);
             // Nama
-            ctx.fillText(data?.nama.toUpperCase(), 1130, 680)
+            ctx.fillText(': ' + data?.nama.toUpperCase(), 474, 322)
             // ttl
-            ctx.fillText(formatDateToIndonesian(data?.ttl), 1130, 740)
+            ctx.fillText(': ' + (data?.tptLahir ? `${data?.tptLahir.toUpperCase()}, ` : '') + formatDateToIndonesian(data?.ttl), 474, 352)
             // Alamat
-            ctx.fillText(data?.alamat, 1130, 800)
+            // Tentukan lebar maksimum kotak untuk alamat
+            const maxWidth = 530;
+            const address = data?.alamat; // Ambil nilai alamat dari data
+
+            // Pisahkan teks alamat menjadi bagian-bagian yang lebih kecil jika panjangnya melebihi maxWidth
+            function wrapText(text, maxWidth) {
+                const words = text.split(' ');
+                let lines = [];
+                let currentLine = words[0];
+
+                for (let i = 1; i < words.length; i++) {
+                    const word = words[i];
+                    const width = ctx.measureText(currentLine + ' ' + word).width;
+                    if (width < maxWidth) {
+                        currentLine += ' ' + word;
+                    } else {
+                        lines.push(currentLine);
+                        currentLine = word;
+                    }
+                }
+                lines.push(currentLine);
+                return lines;
+            }
+
+            // Tampilkan teks alamat dengan fungsi wrapText
+            const wrappedAddress = wrapText(address, maxWidth);
+            let y = 377; // Tentukan posisi awal y untuk teks alamat
+
+            // Tampilkan setiap bagian teks alamat di kotak dengan posisi yang sesuai
+            wrappedAddress.forEach(line => {
+                ctx.fillText(': ' + line.toUpperCase(), 474, y);
+                y += 25; // Sesuaikan jarak antar baris teks
+            });
             // Masa Berlaku
-            ctx.fillText(getExp(data?.formal), 1130, 870)
+            ctx.fillText(': ' + getExp(data?.formal), 474, 435)
         };
     }, [photo, template]);
     useEffect(() => {
@@ -176,7 +208,8 @@ export default function IdCardModal({ cardModal, setCardModal, dataSiswa, toastI
         ttl: dataSiswa?.tgl_lahir,
         alamat: dataSiswa?.alamat,
         formal: dataSiswa?.formal,
-        status: dataSiswa?.status
+        status: dataSiswa?.status,
+        tptLahir: dataSiswa?.tempat_lahir
     }
 
     const [isDownload, setIsDownload] = useState(false)
@@ -195,7 +228,7 @@ export default function IdCardModal({ cardModal, setCardModal, dataSiswa, toastI
                 setPhoto(data.urlPhoto)
                 setTemplate(data.urlTemplate)
             })
-            .catch(res => {
+            .catch(() => {
                 return getBack()
 
             }

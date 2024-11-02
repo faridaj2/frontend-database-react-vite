@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import DashboardTemplate from '../../components/DashboardTemplate'
 import { Link, useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from "@nextui-org/react"
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Avatar } from "@nextui-org/react"
 import ModalGroupPayment from '../../components/ModalGroupPayment'
 
 // Next ui
@@ -13,7 +13,6 @@ import { Card, CardHeader, CardBody, Divider, Button, Input, Pagination, Checkbo
 // Icon
 import { FaChartLine } from "react-icons/fa"
 import { FaSearch } from "react-icons/fa"
-import { FaUserLarge } from "react-icons/fa6"
 import { FaEdit } from "react-icons/fa"
 import { FaPlus } from "react-icons/fa"
 import { MdDeleteSweep } from "react-icons/md"
@@ -22,8 +21,9 @@ import { MdDelete } from "react-icons/md"
 // Utilitas
 import AuthUser from '../../utils/AuthUser'
 import AllUtils from '../../utils/AllUtils'
+import getImage from '../../utils/getImage'
 
-const UpdateModal = ({ modal, setModal, name, desc, toastInfo, toastSuccess, id, refresh }) => {
+const UpdateModal = ({ modal, setModal, name, desc, toastInfo, id, refresh }) => {
     const { http } = AuthUser()
     const onOpenChange = () => {
         const action = modal ? onClose : onOpen;
@@ -48,7 +48,7 @@ const UpdateModal = ({ modal, setModal, name, desc, toastInfo, toastSuccess, id,
             desc: desk
         }
         http.patch(`/api/edit-payment-group/${id}`, data)
-            .then(res => {
+            .then(() => {
                 setIsLoading(false)
                 refresh()
                 onClose()
@@ -59,7 +59,7 @@ const UpdateModal = ({ modal, setModal, name, desc, toastInfo, toastSuccess, id,
     return (
         <Modal isOpen={modal} onOpenChange={onOpenChange} backdrop='blur'>
             <ModalContent>
-                {(onClose) => (
+                {() => (
                     <>
                         <ModalHeader className="flex flex-col gap-1">Edit Detail Pembayaran</ModalHeader>
                         <ModalBody className='flex flex-col gap-3'>
@@ -191,7 +191,7 @@ function GroupPaymentDetail() {
     }
     const deleteMethod = () => {
         http.post(`/api/delete-from-group-payment/${id}`, selected)
-            .then(res => {
+            .then(() => {
                 setCurrentPage(1)
                 getGroupId()
                 setSelected([])
@@ -207,8 +207,7 @@ function GroupPaymentDetail() {
         <DashboardTemplate>
             <ToastContainer />
             <div>
-                <Card className='text-violet-700 shadow-md shadow-blue-700/30 bg-transparent'>
-                    <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:6rem_4rem]"></div>
+                <Card className='text-violet-700 shadow-md shadow-blue-700/30'>
                     <CardHeader className='font-bold text-2xl flex justify-between' >
                         Detail
                         <div className='flex gap-1'>
@@ -250,24 +249,24 @@ function GroupPaymentDetail() {
                     <Divider className='my-2' />
                     <div className='flex flex-col gap-2'>
                         {siswa?.map((item) => (
-                            <Link key={item.id} className='bg-slate-100 rounded-md hover:bg-blue-200 p-2 flex justify-between transition-all ease-in-out hover:shadow-md hover:shadow-violet-700/30 hover:-translate-x-2'>
+                            <Link key={item.id} className='flex justify-between border-1 p-2 rounded-xl bg-white hover:shadow-md hover:shadow-violet-600/40 transition-all'>
                                 <div className='flex gap-2 items-center'>
                                     <div>
                                         <Checkbox isSelected={getStatus(item.id)} onValueChange={e => submitStatus(e, item.id)} />
                                     </div>
-                                    <div className='p-4 bg-white rounded-md'>
-                                        <FaUserLarge className='text-blue-700' />
+                                    <div className='bg-white rounded-md'>
+                                        <Avatar src={getImage(siswa)} />
                                     </div>
                                     <div className='flex flex-col'>
-                                        <div className='font-medium uppercase text-gray-700'>{item.nama_siswa}</div>
+                                        <div className='font-semibold uppercase text-gray-700'>{item.nama_siswa}</div>
                                         <div className='text-tiny text-gray-600'>{item.nis}</div>
                                     </div>
                                 </div>
                                 <div className='flex items-center gap-2'>
-                                    <div className='text-tiny bg-blue-500 text-white font-bold rounded-lg p-2'>
+                                    <div className='text-tiny'>
                                         {item.formal}
                                     </div>
-                                    <div className='text-tiny bg-blue-500 text-white font-bold rounded-lg p-2'>
+                                    <div className='text-tiny'>
                                         {item.diniyah}
                                     </div>
 

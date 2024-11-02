@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import DashboardTemplate from '../../components/DashboardTemplate'
 import { Card, CardBody, Chip, Select, SelectItem } from '@nextui-org/react'
 import { Button } from '@nextui-org/react'
 import { IoAddSharp } from "react-icons/io5";
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Avatar, Tooltip, Input, useDisclosure, Spinner } from "@nextui-org/react"
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Avatar, Tooltip, Input, useDisclosure } from "@nextui-org/react"
 import { Pagination } from "@nextui-org/pagination";
 import { HiOutlineEye } from "react-icons/hi";
 import { TbEditCircle } from "react-icons/tb";
@@ -212,7 +212,7 @@ function DataSantri() {
                         </CardBody>
                     </Card>
                 </div>
-                <Table aria-label="Example static collection table" className='mt-2'>
+                <Table aria-label="Example static collection table" isStriped className='mt-2'>
                     <TableHeader>
                         <TableColumn>NAME</TableColumn>
                         <TableColumn className=''>NIS</TableColumn>
@@ -224,9 +224,9 @@ function DataSantri() {
                             dataSiswa?.map(siswa => (
                                 <TableRow key={siswa.id}>
                                     <TableCell className='flex gap-2 items-center'>
-                                        <Avatar src={getImage(siswa)} radius='md' />
+                                        <Avatar src={getImage(siswa)} color='primary' isBordered radius='sm' />
                                         <div className='flex flex-col'>
-                                            <h3 className='font-semibold text-gray-700 w-full max-w-40 truncate'>{siswa.nama_siswa}</h3>
+                                            <h3 className='font-semibold text-gray-700 w-full max-w-40 md:max-w-none truncate'>{siswa.nama_siswa}</h3>
                                             <span className='text-xs text-gray-400'>Murid</span>
                                         </div>
                                     </TableCell>
@@ -257,7 +257,7 @@ function DataSantri() {
                 </Table>
                 {!dataSiswa && (
                     <div className='w-full flex items-center justify-center p-5'>
-                        <Spinner />
+                        <span className="loader"></span>
                     </div>
                 )}
                 <Pagination showControls total={totalPages} onChange={(e) => changePage(e)} initialPage={1} page={currentPage} className={`my-3 ${totalPages === 1 && 'hidden'}`} />

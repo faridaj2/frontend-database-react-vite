@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useState } from 'react'
 import AuthUser from '../utils/AuthUser'
 import { useNavigate } from "react-router-dom"
 import Sidebar from './Sidebar';
@@ -6,6 +7,37 @@ import Sidebar from './Sidebar';
 // Icon
 import { RiMenu3Fill } from "react-icons/ri"
 import { Button } from '@nextui-org/react';
+import AllUtils from '../utils/AllUtils';
+import { ToastContainer } from 'react-toastify';
+
+
+
+const useOnlineStatus = () => {
+    const [isOnline, setIsOnline] = useState(navigator.onLine);
+    const { toastInfo } = AllUtils()
+
+    const handleOnline = () => {
+        setIsOnline(true);
+        toastInfo('Internet anda telah kembali')
+    };
+
+    const handleOffline = () => {
+        setIsOnline(false);
+        toastInfo('Internet anda terputus, periksa kembali')
+    };
+
+    useEffect(() => {
+        window.addEventListener('online', handleOnline);
+        window.addEventListener('offline', handleOffline);
+
+        return () => {
+            window.removeEventListener('online', handleOnline);
+            window.removeEventListener('offline', handleOffline);
+        };
+    }, []);
+
+    return isOnline;
+};
 
 function DashboardTemplate({ children }) {
     const navigate = useNavigate();
@@ -21,9 +53,12 @@ function DashboardTemplate({ children }) {
     const [path, setPath] = useState('dashboard')
     const [nav, setNav] = useState(false)
 
+    const isOnline = useOnlineStatus();
+
 
     return (
         <div >
+            <ToastContainer />
             <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"><div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-fuchsia-400 opacity-20 blur-[100px]"></div></div>
             {/* <Navbar maxWidth='full' isBordered className='sticky mb-0'>
                 <NavbarBrand>
@@ -37,8 +72,11 @@ function DashboardTemplate({ children }) {
                     </NavbarItem>
                 </NavbarContent>
             </Navbar> */}
+            <div>
+
+            </div>
             <div className='flex gap-2 items-stretch h-screen'>
-                {user && <Sidebar path={path} setPath={setPath} nav={nav} setNav={setNav} />}
+                {user && <Sidebar isOnline={isOnline} path={path} setPath={setPath} nav={nav} setNav={setNav} />}
 
                 <div className='hideScrollBar overflow-auto w-full p-2'>
                     <div className='w-full flex md:hidden justify-end py-2 mb-3 '>

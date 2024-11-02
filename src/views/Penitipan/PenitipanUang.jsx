@@ -18,6 +18,7 @@ function PenitipanUang() {
     const [search, setSearch] = useState('')
 
     useEffect(() => {
+        document.title = 'Penitipan Uang'
         getSiswa()
     }, [])
 
@@ -46,7 +47,7 @@ function PenitipanUang() {
                             {paginate && paginate.data.map(data => (
                                 <div key={data.id} onClick={() => navigate(`/dashboard/penitipan/detail/${data.id}`)} className='border-1 p-2 hover:shadow-md hover:shadow-violet-700/30 transition bg-white rounded-xl cursor-pointer flex justify-between items-center pr-4'>
                                     <div className=' flex gap-2 items-center'>
-                                        <Avatar src={getImage(data)} />
+                                        <Avatar color='primary' radius='sm' src={getImage(data)} />
                                         <div>
                                             <div className='text-medium font-semibold truncate w-full max-w-40 md:w-full md:max-w-60'>{data.nama_siswa}</div>
                                             <div className='text-tiny text-gray-400'>{data.formal} - {data.diniyah}</div>
@@ -57,12 +58,14 @@ function PenitipanUang() {
                                     </div>
                                 </div>
                             ))}
+                            {!paginate && (
+                                <div className='w-full flex items-center justify-center p-5'>
+                                    <span className="loader"></span>
+                                </div>
+                            )}
                         </div>
 
                     </div>
-                </div>
-                <div className='grow hidden md:block'>
-                    <div className='p-2 border-1 bg-white shadow rounded-xl'>Transaksi Terakhir</div>
                 </div>
             </div>
         </DashboardTemplate>

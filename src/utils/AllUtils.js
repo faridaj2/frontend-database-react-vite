@@ -13,7 +13,7 @@ const AllUtils = () => {
             .then(res => {
                 setSiswa(res.data)
             })
-            .catch(res => {
+            .catch(() => {
                 navigate('/dashboard/data-santri/')
             })
     }
@@ -55,12 +55,14 @@ const AllUtils = () => {
         });
     }
     const addComa = (input) => {
-        if (!input) return
+        if (input === undefined || input === null) return
+
         if (typeof input !== 'string') {
             input = input.toString()
         }
-        let num = input.replace(/\D/g, '')
-        num = num.replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+
+        let num = input.replace(/[^0-9-]/g, '') // Keep only digits and minus sign
+        num = num.replace(/\B(?=(\d{3})+(?!\d))/g, '.') // Add commas for thousands separator
         return num
     }
     const convertDate = (obj) => {

@@ -1,11 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Select, SelectItem, Divider, Pagination, Chip, Spinner, Checkbox, Tooltip } from "@nextui-org/react";
-
+import { motion, AnimatePresence } from 'framer-motion';
 // Icon
 import { CgArrowsExchange } from "react-icons/cg"
 import { FaPlus } from "react-icons/fa"
-import { PiMoneyWavyFill } from "react-icons/pi"
 import { FaCheck } from "react-icons/fa"
 import { CiBoxList } from "react-icons/ci"
 
@@ -62,7 +61,7 @@ function ModalGroupPayment({ isOpen, setIsOpen, id, refresh }) {
 
 
     useEffect(() => {
-        const delayedSearch = debounce(getSiswa, 1500);
+        const delayedSearch = debounce(getSiswa, 500);
         if (search && search.length < 3) return
         setCurrentPage(1)
         delayedSearch();
@@ -71,18 +70,17 @@ function ModalGroupPayment({ isOpen, setIsOpen, id, refresh }) {
         getSiswa()
     }, [currentPage])
     const getSiswa = () => {
-        setIsLoading(true)
         http.get(`/api/${id}/get-list-siswa?q=${search}&page=${currentPage}&active=${isActive}`)
             .then(res => {
                 const data = res.data
                 setPage(Math.ceil(data.total / data.per_page))
                 setData(data)
                 // console.log(res)
-                setIsLoading(false)
+
             })
             .catch(res => {
                 console.log(res)
-                setIsLoading(false)
+
             })
     }
     const changePage = (e) => {
@@ -100,20 +98,17 @@ function ModalGroupPayment({ isOpen, setIsOpen, id, refresh }) {
         if (select === undefined) return
         const data = Array.from(select)[0]
         if (data === undefined) return
-        setIsLoading(true)
         http.get(`/api/get-siswa/kelas/${data}?active=${isActive}`)
             .then(res => {
                 const data = res.data
                 addData(data)
-                setIsLoading(false)
             })
-            .catch(res => setIsLoading(false))
 
     }
     const submitData = () => {
         const idSiswa = selected.map(item => item.id)
         http.post(`/api/add-santri-to-group/${id}`, idSiswa)
-            .then(res => {
+            .then(() => {
                 refresh()
                 onClose()
             })
@@ -156,19 +151,27 @@ function ModalGroupPayment({ isOpen, setIsOpen, id, refresh }) {
                                         </div>
                                     </div>
                                     <Divider className='my-2' />
-                                    <div className='max-h-96 overflow-auto m-2 flex flex-col gap-2'>
+                                    <div className='max-h-96 overflow-auto m-2 flex flex-col gap-2 scroll'>
                                         {data?.data.map(item => (
                                             <div key={item.id} className='p-2 rounded-md bg-blue-50 text-blue-900 flex justify-between items-center'>
                                                 <div className='w-full flex justify-between mr-10'>
                                                     <div className='flex items-center gap-2'>
-                                                        <div className='bg-white shadow p-2 rounded-full'>
+                                                        {/* <div className='bg-white shadow p-2 rounded-full'>
                                                             <PiMoneyWavyFill />
+                                                        </div> */}
+                                                        <div>
+                                                            <div>
+                                                                {item.nama_siswa}
+                                                            </div>
+                                                            <div className='text-tiny text-gray-500'>
+                                                                {item.nis}
+                                                            </div>
                                                         </div>
-                                                        {item.nama_siswa}
                                                     </div>
                                                     <div className='flex items-center gap-2'>
-                                                        <Chip color='warning' variant='bordered' size='sm'>{item.formal}</Chip>
-                                                        <Chip color='warning' variant='bordered' size='sm'>{item.diniyah}</Chip>
+
+                                                        {item.formal && <Chip color='warning' variant='faded' size='sm'>{item.formal}</Chip>}
+                                                        {item.diniyah && <Chip color='warning' variant='faded' size='sm'>{item.diniyah}</Chip>}
                                                     </div>
                                                 </div>
                                                 {selected.find(select => select.id === item.id) ? <Button size='sm' color='danger' className='text-tiny' isIconOnly onClick={() => deleteFromSelected(item.id)}><FaCheck /></Button> : <Button size='sm' color='primary' className='text-xl' isIconOnly onClick={() => addToSelected(item)}><CgArrowsExchange /></Button>}
@@ -180,34 +183,45 @@ function ModalGroupPayment({ isOpen, setIsOpen, id, refresh }) {
                                         <Pagination total={page} page={currentPage} onChange={e => changePage(e)} showControls />
                                     </div>
                                 </div>
-                                <div className='rounded-xl shadow-lg w-full outline outline-1 outline-blue-200 p-2 relative'>
-                                    <div className='text-base font-semibold bg-blue-500 text-blue-700 rounded-full p-2 flex gap-2 items-center'>
-                                        <div className='bg-white p-3 rounded-full'>
+                                <div className='rounded-xl shadow-lg w-full outline outline-1 outline-blue-200 p-1 relative'>
+                                    <div className='text-base text-primary rounded-xl p-1 flex gap-2 items-center'>
+                                        <div className='bg-white p-3 rounded-xl shadow-md'>
                                             <CiBoxList />
                                         </div>
-                                        <div className='text-white'>
+                                        <div className='text-primary'>
                                             Total : {selected.length}
                                         </div>
                                     </div>
                                     <Divider className='my-2' />
-                                    <div className='flex flex-col gap-2 p-2 overflow-auto h-96'>
-                                        {selected?.map(item => (
-                                            <div key={item.id} className='p-2 rounded-md bg-blue-50 text-blue-900 flex justify-between items-center'>
-                                                <div className='w-full flex justify-between mr-10'>
-                                                    <div className='flex items-center gap-2'>
-                                                        <div className='bg-white shadow p-2 rounded-full'>
-                                                            <PiMoneyWavyFill />
+                                    <div className='flex flex-col gap-2 p-2 overflow-auto h-96 scroll'>
+                                        <AnimatePresence>
+                                            {selected?.map(item => (
+                                                <motion.div key={item.id} className='p-2 rounded-md bg-blue-50 text-blue-900 flex justify-between items-center'
+                                                    initial={{ opacity: 0, y: 20 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    exit={{ y: -20, opacity: 0 }}
+                                                    layout
+                                                >
+                                                    <div className='w-full flex justify-between mr-10'>
+                                                        <div className='flex items-center gap-2'>
+                                                            <div>
+                                                                <div>
+                                                                    {item.nama_siswa}
+                                                                </div>
+                                                                <div className='text-tiny text-gray-500'>
+                                                                    {item.nis}
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                        {item.nama_siswa}
+                                                        <div className='flex items-center gap-2'>
+                                                            {item.formal && <Chip color='warning' variant='faded' size='sm'>{item.formal}</Chip>}
+                                                            {item.diniyah && <Chip color='warning' variant='faded' size='sm'>{item.diniyah}</Chip>}
+                                                        </div>
                                                     </div>
-                                                    <div className='flex items-center gap-2'>
-                                                        <Chip color='warning' variant='bordered' size='sm'>{item.formal}</Chip>
-                                                        <Chip color='warning' variant='bordered' size='sm'>{item.diniyah}</Chip>
-                                                    </div>
-                                                </div>
-                                                <Button size='sm' color='danger' className='text-tiny' isIconOnly onClick={() => deleteFromSelected(item.id)}><FaCheck /></Button>
-                                            </div>
-                                        ))}
+                                                    <Button size='sm' color='danger' className='text-tiny' isIconOnly variant='shadow' onClick={() => deleteFromSelected(item.id)}><FaCheck /></Button>
+                                                </motion.div>
+                                            ))}
+                                        </AnimatePresence>
                                     </div>
                                 </div>
                             </div>

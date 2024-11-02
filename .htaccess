@@ -1,0 +1,6 @@
+RewriteEngine On
+RewriteBase /
+RewriteRule ^$ dist/ [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ dist/$1 [L]

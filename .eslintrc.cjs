@@ -19,6 +19,7 @@ module.exports = {
     ],
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
-    "react/jsx-no-undef": "warn"
+    "react/jsx-no-undef": "warn",
+    "no-unused-vars": "warn"
   },
 }

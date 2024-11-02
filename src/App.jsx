@@ -21,6 +21,9 @@ import GroupPaymentDetail from './views/Payment/GroupPaymentDetail';
 import DetailUserPayment from './views/Payment/DetailUserPayment';
 import PenitipanUang from './views/Penitipan/PenitipanUang';
 import DetailPenitipanUang from './views/Penitipan/DetailPenitipanUang';
+import Keamanan from './views/Keamanan/Keamanan';
+import DetailKeamanan from './views/Keamanan/DetailKeamanan';
+import RiwayatKeamanan from './views/Keamanan/RiwayatKeamanan';
 
 import { Provider } from 'react-redux'
 import store from './store/store';
@@ -56,6 +59,12 @@ function App() {
             {/* Penitipan Uang */}
             <Route path="/dashboard/penitipan" element={<PrivateRoute element={PenitipanUang} roles="penitipan" />} />
             <Route path="/dashboard/penitipan/detail/:id" element={<PrivateRoute element={DetailPenitipanUang} roles="penitipan" />} />
+            {/* Keamanan */}
+            <Route path="/dashboard/keamanan" element={<PrivateRoute element={Keamanan} roles="keamanan" />} />
+            <Route path="/dashboard/keamanan/detail/:id" element={<PrivateRoute element={DetailKeamanan} roles="keamanan" />} />
+            <Route path="/dashboard/keamanan/riwayat/:id" element={<PrivateRoute element={RiwayatKeamanan} roles="keamanan" />} />
+
+
             {/* Admin */}
             <Route path="/dashboard/zona-admin" element={<PrivateRoute element={ZonaAdmin} roles="admin" />} />
 

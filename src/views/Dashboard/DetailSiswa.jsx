@@ -200,7 +200,7 @@ function DetailSiswa() {
                                             status
                                         </div>
                                         <div className='font-semibold text-base'>
-                                            <Chip size='sm' color={StatusChip()}>{siswa?.status}</Chip>
+                                            <Chip size='sm' className='text-white' color={StatusChip()}>{siswa?.status}</Chip>
                                         </div>
                                     </div>
                                 </div>
