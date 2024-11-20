@@ -24,6 +24,7 @@ import DetailPenitipanUang from './views/Penitipan/DetailPenitipanUang';
 import Keamanan from './views/Keamanan/Keamanan';
 import DetailKeamanan from './views/Keamanan/DetailKeamanan';
 import RiwayatKeamanan from './views/Keamanan/RiwayatKeamanan';
+import Laporan from './views/Payment/Laporan';
 
 import { Provider } from 'react-redux'
 import store from './store/store';
@@ -56,6 +57,7 @@ function App() {
             <Route path="/dashboard/payment/detail/:id" element={<PrivateRoute element={DetailPayment} roles="keuangan" />} />
             <Route path="/dashboard/payment/group-payment/:id" element={<PrivateRoute element={GroupPaymentDetail} roles="keuangan" />} />
             <Route path="/dashboard/payment/payment-detail/:paymentId/:siswaId" element={<PrivateRoute element={DetailUserPayment} roles="keuangan" />} />
+            <Route path="/dashboard/payment/laporan/:data" element={<PrivateRoute element={Laporan} />} roles="keuangan" />
             {/* Penitipan Uang */}
             <Route path="/dashboard/penitipan" element={<PrivateRoute element={PenitipanUang} roles="penitipan" />} />
             <Route path="/dashboard/penitipan/detail/:id" element={<PrivateRoute element={DetailPenitipanUang} roles="penitipan" />} />

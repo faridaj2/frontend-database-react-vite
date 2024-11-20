@@ -14,7 +14,7 @@ import { Link } from 'react-router-dom'
 import { GiCash } from "react-icons/gi"
 import { BsCalendar2MonthFill } from "react-icons/bs"
 import { MdGroups2 } from "react-icons/md"
-import { BsFileEarmarkExcel } from "react-icons/bs";
+
 
 // Utilst
 import AllUtils from '../../utils/AllUtils'
@@ -92,37 +92,6 @@ const ModalGroupPembayaran = ({ modal, setModal, toastInfo, toastSuccess, refres
   )
 }
 
-const ModalDownloadLaporan = ({ modal, setModal }) => {
-  const onOpenChange = () => {
-    modal ? setModal(false) : setModal(true)
-  }
-  return (
-
-    <Modal isOpen={modal} onOpenChange={onOpenChange} backdrop="blur" size="lg" isDismissable="false">
-      <ModalContent>
-        {(onClose) => (
-          <>
-            <ModalHeader className="flex flex-col gap-1">Download Laporan</ModalHeader>
-            <ModalBody>
-              <DateRangePicker label="Pilih rentang tanggal" />
-              <RadioGroup label="Pilih tipe laporan" defaultValue="pdf">
-                <Radio value="pdf">PDF</Radio>
-                <Radio value="excel">EXCEL</Radio>
-              </RadioGroup>
-              <Button color="primary">
-                Download
-              </Button>
-
-            </ModalBody>
-            <ModalFooter>
-            </ModalFooter>
-
-          </>
-        )}
-      </ModalContent>
-    </Modal>
-  )
-}
 
 
 function Payment() {
@@ -209,20 +178,16 @@ function Payment() {
         <Tabs aria-label="Options" color='primary'>
           <Tab key="pembayaran" title="Pembayaran">
             <h3 className='text-lg font-semibold text-blue-700 mb-2'>Pembayaran</h3>
-            <div className='flex justify-between gap-2 items-center'>
-              <Tooltip content="Tambah Pembayaran baru">
-                <Button isIconOnly color='primary' size='sm' variant='shadow' onClick={() => setCreateModal(true)}><FaPlus /></Button>
-              </Tooltip>
 
-              <Button color='primary' size='sm' variant='shadow' onClick={() => setModalLaporan(true)}><BsFileEarmarkExcel /> Download Laporan</Button>
-
-            </div>
 
             {isLoading &&
               <div className='w-full flex items-center justify-center p-5'>
                 <span className="loader"></span>
               </div>
             }
+            <Tooltip content="Tambah Pembayaran Baru">
+              <Button size='sm' color='primary' isIconOnly variant='shadow' onClick={() => setCreateModal(true)}><FaPlus /></Button>
+            </Tooltip>
 
 
             <div className='mt-3 flex gap-3 flex-col'>
@@ -290,7 +255,7 @@ function Payment() {
       </div>
       <ModalGroupPembayaran modal={groupModal} setModal={setGroupModal} toastInfo={toastInfo} toastSuccess={toastSuccess} refresh={getAllGroupPayment} />
       <ModalCreatePayment modal={createModal} setModal={setCreateModal} toastInfo={toastInfo} toastSuccess={toastSuccess} refresh={getAllTabelPayment} />
-      <ModalDownloadLaporan modal={modalLaporan} setModal={setModalLaporan} />
+
     </DashboardTemplate>
   )
 }

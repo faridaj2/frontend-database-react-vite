@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 
 // Component
@@ -8,10 +8,11 @@ import DeleteModalPayment from '../../components/Payment/DeleteModalPayment'
 
 // Utilitas
 import AuthUser from '../../utils/AuthUser'
-import { Button, Card, CardBody, CardHeader, DatePicker, DateRangePicker, Divider, Input, Pagination, Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
+import { Button, Card, CardBody, CardHeader, DatePicker, DateRangePicker, Divider, Input, Pagination, Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@nextui-org/react'
 import { motion } from 'framer-motion'
 import AllUtils from '../../utils/AllUtils'
 import { parseDate } from '@internationalized/date'
+import { I18nProvider } from "@react-aria/i18n";
 
 // Icon
 import { FaChartLine } from "react-icons/fa"
@@ -23,7 +24,59 @@ import { FaPlus } from "react-icons/fa"
 import { FaTrash } from "react-icons/fa"
 import { FcCollapse } from "react-icons/fc"
 import { FaSearch } from "react-icons/fa"
+import { BsFileEarmarkExcel } from "react-icons/bs";
 
+
+const ModalDownloadLaporan = ({ modal, setModal, id }) => {
+    const onOpenChange = () => {
+        modal ? setModal(false) : setModal(true)
+    }
+    let [date, setDate] = useState()
+    const [final, setFinal] = useState()
+    const [dsb, setDsb] = useState(true)
+
+    const { convertDate } = AllUtils()
+
+    useEffect(() => {
+        if (date && date.start) {
+            setDsb(false)
+            const data = {
+                start: convertDate(date.start),
+                end: convertDate(date.end),
+                id
+            }
+            setFinal(btoa(unescape(encodeURIComponent(JSON.stringify(data)))))
+        }
+    }, date)
+
+    const newTab = () => {
+        window.open(`/dashboard/payment/laporan/${final}`)
+        setDate()
+        setModal(false)
+    }
+
+    return (
+        <Modal isOpen={modal} onOpenChange={onOpenChange} backdrop="blur" size="lg" isDismissable="false">
+            <ModalContent>
+                {() => (
+                    <>
+                        <ModalHeader className="flex flex-col gap-1">Download Laporan</ModalHeader>
+                        <ModalBody>
+                            <I18nProvider locale="id-ID">
+                                <DateRangePicker label="Pilih rentang tanggal" value={date} onChange={setDate} aria-label='date picker' />
+                            </I18nProvider>
+
+                            <Button color='primary' disabled={dsb} onClick={newTab} >Buka</Button>
+                        </ModalBody>
+                        <ModalFooter>
+                        </ModalFooter>
+
+                    </>
+                )}
+            </ModalContent>
+        </Modal>
+    )
+}
 
 
 function DetailPayment() {
@@ -77,6 +130,8 @@ function DetailPayment() {
     const [group, setGroup] = useState([])
     const [groupId, setGroupId] = useState("")
     const [idGroup, setIdGroup] = useState("")
+
+    const [modalLaporan, setModalLaporan] = useState(false)
 
     useEffect(() => {
         if (!range) return
@@ -212,7 +267,7 @@ function DetailPayment() {
         }
         setIsLoading(true)
         http.post(`/api/update-payment-detail/${id}`, data)
-            .then(res => {
+            .then(() => {
                 setSettings(false)
                 getData()
                 setIsLoading(false)
@@ -267,9 +322,9 @@ function DetailPayment() {
                     <div className='p-3 flex flex-col gap-4'>
 
                         <div className='mt-5 font-semibold'>Pengaturan Umum</div>
-                        <Input label="Nama Pembayaran" size='sm' value={namaPembayaran} onValueChange={setNamaPembayaran} variant='underlined' labelPlacement='outside' />
+                        <Input aria-label='Pembayaran Nama' label="Nama Pembayaran" size='sm' value={namaPembayaran} onValueChange={setNamaPembayaran} variant='underlined' labelPlacement='outside' />
                         <Input label="Deskripsi" size='sm' value={desc} onValueChange={setDesc} variant='underlined' labelPlacement='outside' />
-                        <Select selectedKeys={[bulanan]} onChange={e => setBulanan(e.target.value)} label="Jenis pembayaran" variant='underlined'>
+                        <Select aria-label='Jenis Pembayaran' selectedKeys={[bulanan]} onChange={e => setBulanan(e.target.value)} label="Jenis pembayaran" variant='underlined'>
                             <SelectItem key="bulanan" value="bulanan">
                                 Bulanan
                             </SelectItem>
@@ -277,7 +332,7 @@ function DetailPayment() {
                                 Kontan
                             </SelectItem>
                         </Select>
-                        <Select selectedKeys={[groupId]} onChange={e => setGroupId(e.target.value)} label="Group Pembayaran" variant='underlined'>
+                        <Select aria-label='Group Pembayaran' selectedKeys={[groupId]} onChange={e => setGroupId(e.target.value)} label="Group Pembayaran" variant='underlined'>
                             {group?.map(item => (
                                 <SelectItem key={item.id} value={item.id}>
                                     {item.group_name}
@@ -325,10 +380,20 @@ function DetailPayment() {
                     </div>
                 </div>
             </motion.div>
-            <div className='flex justify-end mb-3 gap-2 items-center'>
-                <div className={` transition-all ease-in-out cursor-pointer ${detail && 'rotate-180'}`} onClick={() => setDetail(!detail)}><FcCollapse /></div>
-                <Button color='primary' size='sm' onClick={() => setSettings(!settings)} isIconOnly>{!settings ? <FaGear /> : <IoClose />}</Button>
-                <Button color='danger' size='sm' onClick={openModalDelete} isIconOnly><FaTrash /></Button>
+            <div className='flex justify-between mb-3 gap-2 items-center'>
+                <div className='flex justify-between gap-2 items-center'>
+                    <div className='text-xl font-bold text-primary'>
+                        {namaPembayaran}
+                    </div>
+
+
+                </div>
+                <div className='flex items-center gap-2'>
+                    <div className={` transition-all ease-in-out cursor-pointer ${detail && 'rotate-180'}`} onClick={() => setDetail(!detail)}><FcCollapse /></div>
+                    <Button color='primary' size='sm' variant='shadow' onClick={() => setModalLaporan(true)}><BsFileEarmarkExcel /> Download Laporan</Button>
+                    <Button color='primary' size='sm' onClick={() => setSettings(!settings)} isIconOnly>{!settings ? <FaGear /> : <IoClose />}</Button>
+                    <Button color='danger' size='sm' onClick={openModalDelete} isIconOnly><FaTrash /></Button>
+                </div>
             </div>
             <motion.div
                 className={`w-full flex flex-col md:flex-row gap-4 overflow-hidden`}
@@ -450,7 +515,7 @@ function DetailPayment() {
             {/* Body Content */}
             <Input className='shadow-md shadow-violet-700/30 rounded-lg mt-2' value={search} onValueChange={setSearch} endContent={<FaSearch />} />
             <div className='mt-2'>
-                <Table
+                <Table aria-label='Table Siswa'
                     className='shadow-md shadow-violet-700/30 rounded-lg'
                     bottomContent={<div className='w-full flex items-center justify-center'><Pagination isCompact
                         showControls
@@ -484,6 +549,7 @@ function DetailPayment() {
                 </Table>
             </div>
             <DeleteModalPayment modal={modalDelete} setModal={setModalDelete} id={idToDelete} info={toastInfo} success={toastSuccess} />
+            <ModalDownloadLaporan modal={modalLaporan} setModal={setModalLaporan} id={id} />
         </DashboardTemplate>
     )
 }

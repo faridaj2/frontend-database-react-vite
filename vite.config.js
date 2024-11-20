@@ -7,12 +7,12 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://backend.test/',
+        target: 'http://admin.darussalam2.com/',
         changeOrigin: true,
         rewrite: (path) => path
       },
       '/storage': {
-        target: 'http://backend.test/',
+        target: 'http://admin.darussalam2.com/',
         changeOrigin: true,
         rewrite: (path) => path
       }

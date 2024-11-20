@@ -41,7 +41,8 @@ function ModalGroupPayment({ isOpen, setIsOpen, id, refresh }) {
     const [page, setPage] = useState()
     const [currentPage, setCurrentPage] = useState(1)
     const [isLoading, setIsLoading] = useState(false)
-    const [select, setSelect] = useState()
+    const [select, setSelect] = useState("")
+    const [kelamin, setKelamin] = useState("")
 
     const addToSelected = item => {
         setSelected([...selected, item])
@@ -65,12 +66,12 @@ function ModalGroupPayment({ isOpen, setIsOpen, id, refresh }) {
         if (search && search.length < 3) return
         setCurrentPage(1)
         delayedSearch();
-    }, [search, isActive])
+    }, [search, isActive, kelamin, select])
     useEffect(() => {
         getSiswa()
     }, [currentPage])
     const getSiswa = () => {
-        http.get(`/api/${id}/get-list-siswa?q=${search}&page=${currentPage}&active=${isActive}`)
+        http.get(`/api/${id}/get-list-siswa?q=${search}&page=${currentPage}&active=${isActive}&kelamin=${kelamin}&kelas=${select}`)
             .then(res => {
                 const data = res.data
                 setPage(Math.ceil(data.total / data.per_page))
@@ -130,13 +131,13 @@ function ModalGroupPayment({ isOpen, setIsOpen, id, refresh }) {
                                     )}
 
                                     <div className='flex gap-2 justify-between items-center w-full'>
-                                        <Input placeholder='Cari siswa...' variant='flat' size='lg' value={search} onValueChange={setSearch} />
+                                        <Input placeholder='Cari siswa...' variant='flat' size='xs' value={search} onValueChange={setSearch} />
                                         <Tooltip content="Hanya ambil siswa dengan status aktif">
                                             <Checkbox isSelected={isActive} onValueChange={setIsActive} />
                                         </Tooltip>
                                         <div className='flex gap-2 w-full items-center justify-end'>
                                             <div className='max-w-sm w-full'>
-                                                <Select label="Berdasarkan kelas" className='' size='sm' selectedKeys={select} onSelectionChange={setSelect}>
+                                                <Select label="Kelas" className='' size='md' onChange={e => setSelect(e.target.value)}>
                                                     {formal?.map(item => (
                                                         <SelectItem key={item.key} value={item.key}>{item.label}</SelectItem>
                                                     ))}
@@ -145,10 +146,18 @@ function ModalGroupPayment({ isOpen, setIsOpen, id, refresh }) {
                                                     ))}
                                                 </Select>
                                             </div>
+                                            <div className='max-w-sm w-full'>
+                                                <Select label="Jenis Kelamin" className='' size='md' onChange={e => setKelamin(e.target.value)}>
+
+                                                    <SelectItem key="L" value="L">Laki - Laki</SelectItem>
+                                                    <SelectItem key="P" value="P">Perempuan</SelectItem>
+                                                </Select>
+                                            </div>
                                             <div>
-                                                <Button variant='flat' color='primary' size='lg' onClick={setBySelecet} isIconOnly><FaPlus /></Button>
+                                                <Button variant='flat' color='primary' size='md' onClick={setBySelecet} isIconOnly><FaPlus /></Button>
                                             </div>
                                         </div>
+
                                     </div>
                                     <Divider className='my-2' />
                                     <div className='max-h-96 overflow-auto m-2 flex flex-col gap-2 scroll'>

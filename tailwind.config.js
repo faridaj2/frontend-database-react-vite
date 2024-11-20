@@ -8,7 +8,8 @@ export default {
   ],
   theme: {
     fontFamily: {
-      'sans': ['"Exo 2"', 'sans']
+      'sans': ['"Inter"', 'sans-serif'],
+      'times': ['"Arial"', 'serif'],
     },
     extend: {},
   },

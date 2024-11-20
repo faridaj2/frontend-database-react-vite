@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { Image, Chip, Tooltip } from "@nextui-org/react";
+import { Image, Chip, Tooltip, Accordion, AccordionItem } from "@nextui-org/react";
 import { useNavigate } from 'react-router-dom';
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 import { Button } from '@nextui-org/react';
@@ -125,6 +125,7 @@ function DetailSiswa() {
     useEffect(() => {
         if (siswa) {
             getBerkasSiswa(siswa.id, setBerkas)
+            getPembayaran()
         }
     }, [siswa])
 
@@ -167,6 +168,21 @@ function DetailSiswa() {
     }
     // Modal for id Card
     const [isModal, setIdmodal] = useState(false)
+
+    // api for pembayaran
+    const [pembayaran, setPembayaran] = useState([])
+    const [done, setDone] = useState([])
+
+    const getPembayaran = () => {
+        http.get('/api/user/get-user-tagihan', {
+            headers: { 'ID': siswa?.id }
+        })
+            .then(e => {
+                setPembayaran(Object.values(e.data.pembayaran))
+                setDone(Object.values(e.data.done))
+            })
+            .catch(e => console.log(e))
+    }
 
 
 
@@ -327,6 +343,40 @@ function DetailSiswa() {
 
                         </CardBody>
                     </Card>
+                </div>
+                <div className='w-full'>
+                    <Card>
+                        <CardHeader className='flex justify-between'>
+                            <div className='font-semibold text-black text-base'>
+                                Pembayaran Santri
+                            </div>
+                        </CardHeader>
+                        <CardBody>
+                            <div className='flex gap-2 flex-wrap justify-center md:justify-start'>
+                                <Accordion>
+                                    <AccordionItem key={1} aria-label='Pembayaran Berlaku' title="Pembayaran Berlaku">
+                                        <div className='flex gap-2 '>
+                                            {pembayaran?.map((item, index) => (
+                                                <Button color='primary' key={index} className='py-2'>
+                                                    {item.payment_name}
+                                                </Button>
+                                            ))}
+                                        </div>
+                                    </AccordionItem>
+                                    <AccordionItem key={2} aria-label='Pembayaran Selesai' title="Pembayaran Selesai">
+                                        <div className='flex gap-2 '>
+                                            {done?.map((item, index) => (
+                                                <Button color='primary' key={index} className='py-2'>
+                                                    {item.payment_name}
+                                                </Button>
+                                            ))}
+                                        </div>
+                                    </AccordionItem>
+                                </Accordion>
+                            </div>
+                        </CardBody>
+                    </Card>
+
                 </div>
             </div>
             <ViewPdf viewModal={viewModal} setViewModal={setViewModal} berkas={urlPdf} />

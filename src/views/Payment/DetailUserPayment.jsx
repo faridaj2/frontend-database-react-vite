@@ -41,14 +41,20 @@ function DetailUserPayment() {
         if (income && data.arrayMonth) {
 
             if (data.type === 'Kontan') {
-                const priceKontan = income[0].price
-                const priceBulanan = data.arrayMonth[0].price
-                if (priceKontan < priceBulanan) {
-                    http.post(`/api/set-status-payment/${paymentId}/${siswaId}`, { status: false })
-                } else if (priceKontan >= priceBulanan) {
-                    http.post(`/api/set-status-payment/${paymentId}/${siswaId}`, { status: true })
+                if (income.length > 0 && data.arrayMonth.length > 0) {
+                    const priceKontan = income[0].price
+                    const priceBulanan = data.arrayMonth[0].price
+                    if (priceKontan < priceBulanan) {
+                        http.post(`/api/set-status-payment/${paymentId}/${siswaId}`, { status: false })
+                    } else if (priceKontan >= priceBulanan) {
+                        http.post(`/api/set-status-payment/${paymentId}/${siswaId}`, { status: true })
+                    }
                 }
+
+
+
             } else {
+
                 if (income.length > 0 && data.arrayMonth.length > 0) {
                     const array1 = data.arrayMonth
                     const array2 = income
@@ -60,14 +66,15 @@ function DetailUserPayment() {
 
     function chekArray(arrayA, arrayB) {
         if (arrayA.length !== arrayB.length) {
-            return false; // Jika panjang array tidak sama, langsung kembalikan false
+            return false;
+
         }
 
-        for (let i = 0; i < arrayA.length; i++) {
-            if (arrayA[i].month !== arrayB[i].month || arrayB[i].price < arrayA[i].price) {
-                return false; // Jika bulan tidak sama atau harga b lebih kecil dari a, kembalikan false
-            }
-        }
+        arrayA.forEach(array => {
+            const found = arrayB.find(item => item.month === array.price)
+            if (!found) return false
+            if (found.price < array.price) return false
+        });
 
         return true; // Jika semua objek memenuhi kondisi, kembalikan true
     }

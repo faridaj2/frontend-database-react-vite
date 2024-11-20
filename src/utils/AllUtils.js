@@ -8,6 +8,7 @@ const AllUtils = () => {
     const { http } = AuthUser()
     const navigate = useNavigate()
 
+
     const getSantri = (nis, setSiswa) => {
         http.get(`/api/getData/${nis}`)
             .then(res => {
