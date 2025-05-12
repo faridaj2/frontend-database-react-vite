@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -30,54 +31,34 @@
 }
 
 /* Loading */
-.loader {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  display: block;
-  margin: 15px auto;
-  position: relative;
-  color: #fff;
-  left: -100px;
-  box-sizing: border-box;
-  animation: shadowRolling 2s linear infinite;
-}
-
-@keyframes shadowRolling {
-  0% {
-    box-shadow: 0px 0 rgba(255, 255, 255, 0), 0px 0 rgba(255, 255, 255, 0),
-      0px 0 rgba(255, 255, 255, 0), 0px 0 rgba(255, 255, 255, 0);
-  }
-  12% {
-    box-shadow: 100px 0 rgb(157, 144, 144), 0px 0 rgba(255, 255, 255, 0),
-      0px 0 rgba(255, 255, 255, 0), 0px 0 rgba(255, 255, 255, 0);
-  }
-  25% {
-    box-shadow: 110px 0 rgb(157, 144, 144), 100px 0 rgb(157, 144, 144),
-      0px 0 rgba(255, 255, 255, 0), 0px 0 rgba(255, 255, 255, 0);
-  }
-  36% {
-    box-shadow: 120px 0 rgb(157, 144, 144), 110px 0 rgb(157, 144, 144),
-      100px 0 rgb(157, 144, 144), 0px 0 rgba(255, 255, 255, 0);
-  }
-  50% {
-    box-shadow: 130px 0 rgb(157, 144, 144), 120px 0 rgb(157, 144, 144),
-      110px 0 rgb(157, 144, 144), 100px 0 rgb(157, 144, 144);
-  }
-  62% {
-    box-shadow: 200px 0 rgba(255, 255, 255, 0), 130px 0 rgb(157, 144, 144),
-      120px 0 rgb(157, 144, 144), 110px 0 rgb(157, 144, 144);
-  }
-  75% {
-    box-shadow: 200px 0 rgba(255, 255, 255, 0), 200px 0 rgba(255, 255, 255, 0),
-      130px 0 rgb(157, 144, 144), 120px 0 rgb(157, 144, 144);
-  }
-  87% {
-    box-shadow: 200px 0 rgba(255, 255, 255, 0), 200px 0 rgba(255, 255, 255, 0),
-      200px 0 rgba(255, 255, 255, 0), 130px 0 rgb(157, 144, 144);
-  }
-  100% {
-    box-shadow: 200px 0 rgba(255, 255, 255, 0), 200px 0 rgba(255, 255, 255, 0),
-      200px 0 rgba(255, 255, 255, 0), 200px 0 rgba(255, 255, 255, 0);
-  }
-}
+.loader{
+        display: block;
+        position: relative;
+        height: 12px;
+        width: 80%;
+        border: 1px solid #444a4f;
+        border-radius: 10px;
+        overflow: hidden;
+        background-color: white;
+      }
+      .loader:after{
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 96%;
+        background: #539cdb;
+        animation: 10s prog ease-in 1;
+      }
+      
+      @keyframes prog {
+        0%{width: 0}
+        12%  {   width: 25%;}
+        30%  {   width: 21%;}
+        30%  {   width: 50%;}
+        50%  {   width: 40%;}
+        70%  {   width: 0%;}
+        100%  {   width: 96%;}
+      }
+      

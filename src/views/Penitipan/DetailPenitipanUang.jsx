@@ -82,11 +82,11 @@ function DetailPenitipanUang() {
         <DashboardTemplate>
             <div className="flex flex-col md:flex-row gap-2 w-full">
                 <div className="grow w-full">
-                    <div className="w-full text-center p-2 rounded-xl bg-white m-2">
+                    <div className="w-full text-center p-2 rounded-xl bg-blue-100 m-2">
                         <div className="py-20 font-bold text-3xl font-mono">
                             <div> Rp. {addComa(siswa && siswa.uang_saku ? siswa.uang_saku : '0')}</div>
                         </div>
-                        <div className="flex gap-3 items-center my-3 border-1 border-violet-500 p-4 rounded-xl shadow-md">
+                        <div className="flex bg-white gap-3 items-center my-3 border-1 border-violet-500 p-4 rounded-xl shadow-md">
                             <Avatar src={getImage(siswa && siswa)} isBordered color="primary" />
                             <div className="flex flex-col items-start">
                                 <div className="font-semibold text-gray-700">{siswa?.nama_siswa}</div>

@@ -145,15 +145,15 @@ function Dashboard() {
                         </Card>
                     </div>
                 </div>
-                <div className='bg-white z-50'>
-                    <div className='flex mt-4 justify-end'>
+                <div className='bg-blue-100 rounded-2xl z-50'>
+                    <div className='flex mt-4 justify-end p-2'>
                         <div className='w-full max-w-sm flex gap-2'>
-                            <Select size='sm' color='primary' variant='flat' label="Tahun Awal" onChange={changeStart} selectedKeys={[year?.startYear]}>
+                            <Select size='sm' color='warning' variant='flat' label="Tahun Awal" onChange={changeStart} selectedKeys={[year?.startYear]}>
                                 {arrayYear?.map(item => (
                                     <SelectItem key={`${item}`} value={item} textValue={item}>{item}</SelectItem>
                                 ))}
                             </Select>
-                            <Select size='sm' color='primary' variant='flat' label="Tahun Akhir" onChange={changeEnd} selectedKeys={[year?.endYear]}>
+                            <Select size='sm' color='warning' variant='flat' label="Tahun Akhir" onChange={changeEnd} selectedKeys={[year?.endYear]}>
                                 {arrayYear?.map(item => (
                                     <SelectItem key={`${item}`} value={item} textValue={item}>{item}</SelectItem>
                                 ))}

@@ -62,11 +62,14 @@ const ModalDownloadLaporan = ({ modal, setModal, id }) => {
                     <>
                         <ModalHeader className="flex flex-col gap-1">Download Laporan</ModalHeader>
                         <ModalBody>
+
                             <I18nProvider locale="id-ID">
                                 <DateRangePicker label="Pilih rentang tanggal" value={date} onChange={setDate} aria-label='date picker' />
                             </I18nProvider>
 
+
                             <Button color='primary' disabled={dsb} onClick={newTab} >Buka</Button>
+
                         </ModalBody>
                         <ModalFooter>
                         </ModalFooter>
@@ -310,7 +313,7 @@ function DetailPayment() {
         <DashboardTemplate>
             <ToastContainer />
             <motion.div
-                className='right-0 h-full bg-white/50 backdrop-blur-sm w-full fixed top-0 z-40 transition-all flex justify-end'
+                className='right-0 h-full bg-black/50 backdrop-blur-sm w-full fixed top-0 z-40 transition-all flex justify-end'
                 initial={{ left: '100%' }}
                 animate={{ left: settings ? '0' : '100%' }}
                 transition={{ duration: .2, ease: 'easeInOut' }}
@@ -380,15 +383,13 @@ function DetailPayment() {
                     </div>
                 </div>
             </motion.div>
-            <div className='flex justify-between mb-3 gap-2 items-center'>
-                <div className='flex justify-between gap-2 items-center'>
-                    <div className='text-xl font-bold text-primary'>
+            <div className='flex flex-col md:flex-row justify-between mb-3 gap-2 md:items-center'>
+                <div className=''>
+                    <div className='text-xl font-bold text-primary truncate'>
                         {namaPembayaran}
                     </div>
-
-
                 </div>
-                <div className='flex items-center gap-2'>
+                <div className='flex items-center gap-2 justify-center'>
                     <div className={` transition-all ease-in-out cursor-pointer ${detail && 'rotate-180'}`} onClick={() => setDetail(!detail)}><FcCollapse /></div>
                     <Button color='primary' size='sm' variant='shadow' onClick={() => setModalLaporan(true)}><BsFileEarmarkExcel /> Download Laporan</Button>
                     <Button color='primary' size='sm' onClick={() => setSettings(!settings)} isIconOnly>{!settings ? <FaGear /> : <IoClose />}</Button>
@@ -538,7 +539,7 @@ function DetailPayment() {
                     <TableBody>
                         {siswa?.map(item => (
                             <TableRow key={item.id}>
-                                <TableCell>{item.nama_siswa}</TableCell>
+                                <TableCell className='text-nowrap'>{item.nama_siswa}</TableCell>
                                 <TableCell>{item.nis}</TableCell>
                                 <TableCell>{item.formal}</TableCell>
                                 <TableCell>{item.diniyah}</TableCell>
@@ -549,7 +550,7 @@ function DetailPayment() {
                 </Table>
             </div>
             <DeleteModalPayment modal={modalDelete} setModal={setModalDelete} id={idToDelete} info={toastInfo} success={toastSuccess} />
-            <ModalDownloadLaporan modal={modalLaporan} setModal={setModalLaporan} id={id} />
+            <ModalDownloadLaporan modal={modalLaporan} setModal={setModalLaporan} id={id} bulanan={bulanan} />
         </DashboardTemplate>
     )
 }

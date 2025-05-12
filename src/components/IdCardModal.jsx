@@ -95,14 +95,13 @@ const IdCard = ({ template, photo, data, isDownload, setIsDownload }) => {
             const imgPhoto = new Image()
             imgPhoto.src = `data:image/jpeg;base64,${photo}`
             imgPhoto.onload = () => {
-                // Calculate position and size for rounded image
                 const x = 33;
                 const y = 227;
                 const width = 205;
                 const height = 270;
                 const radius = 30;
 
-                // Draw rounded image
+                
                 ctx.save();
                 ctx.beginPath();
                 ctx.moveTo(x + radius, y);
@@ -138,7 +137,7 @@ const IdCard = ({ template, photo, data, isDownload, setIsDownload }) => {
             ctx.fillText(': ' + (data?.tptLahir ? `${data?.tptLahir.toUpperCase()}, ` : '') + formatDateToIndonesian(data?.ttl), 474, 352)
             // Alamat
             // Tentukan lebar maksimum kotak untuk alamat
-            const maxWidth = 530;
+            const maxWidth = 450;
             const address = data?.alamat; // Ambil nilai alamat dari data
 
             // Pisahkan teks alamat menjadi bagian-bagian yang lebih kecil jika panjangnya melebihi maxWidth
@@ -213,26 +212,25 @@ export default function IdCardModal({ cardModal, setCardModal, dataSiswa, toastI
     }
 
     const [isDownload, setIsDownload] = useState(false)
-
+    const [loading, setLoading] = useState(true)
     const [photo, setPhoto] = useState('loading')
     const [template, setTemplate] = useState()
 
     const getBack = () => {
         onClose()
-        toastInfo('Lengkapi foto untuk melihat Id Card')
     }
     useEffect(() => {
+        setLoading(true)
         http.get(`/api/get-image?id=${dataSiswa?.id}`)
             .then(res => {
+                setLoading(false)
                 let data = res.data
                 setPhoto(data.urlPhoto)
                 setTemplate(data.urlTemplate)
             })
             .catch(() => {
-                return getBack()
-
-            }
-            )
+                setLoading(false)
+            })
     }, [dataSiswa])
 
     return (
@@ -243,12 +241,12 @@ export default function IdCardModal({ cardModal, setCardModal, dataSiswa, toastI
                         <>
                             <ModalHeader className="flex flex-col gap-1">ID CARD</ModalHeader>
                             <ModalBody>
-                                {photo === 'loading' && (<Spinner />)}
-                                {!photo && "Tambahkan foto untuk melihat IDCARD"}
+                                {loading && (<Spinner />)}
                                 {photo && photo !== 'loading' && (<IdCard template={template} photo={photo} data={data} isDownload={isDownload} setIsDownload={setIsDownload} />)}
+                                {photo && photo == 'loading' && 'Tambahkan Foto untuk mendownload ID Card'}
 
                             </ModalBody>
-                            <ModalFooter>
+                            <ModalFooter className={photo && photo == 'loading' && 'hidden'}>
                                 <Button color="danger" variant="light" onPress={onClose}>
                                     Close
                                 </Button>

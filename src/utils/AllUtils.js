@@ -56,15 +56,16 @@ const AllUtils = () => {
         });
     }
     const addComa = (input) => {
-        if (input === undefined || input === null) return
-
+        if (input === undefined || input === null) return '';
         if (typeof input !== 'string') {
-            input = input.toString()
+            input = input.toString();
         }
+        let num = input.replace(/[^\d]/g, '');
+        num = num.replace(/^0+/, '');
+        if (num === '') return '';
+        num = num.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
-        let num = input.replace(/[^0-9-]/g, '') // Keep only digits and minus sign
-        num = num.replace(/\B(?=(\d{3})+(?!\d))/g, '.') // Add commas for thousands separator
-        return num
+        return num;
     }
     const convertDate = (obj) => {
         if (!obj) return

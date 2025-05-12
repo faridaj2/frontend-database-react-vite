@@ -1,10 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react'
 
-import { Button, Divider, Tooltip, Pagination, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Input, DateRangePicker, Radio, RadioGroup } from '@nextui-org/react'
+import { Button, Divider, Tooltip, Pagination, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Input } from '@nextui-org/react'
 
 import DashboardTemplate from '../../components/DashboardTemplate'
 import ModalCreatePayment from '../../components/ModalCreatePayment'
+import Administrasi from '../../components/Payment/Administrasi'
+ 
 
 
 // Icon
@@ -180,17 +182,19 @@ function Payment() {
             <h3 className='text-lg font-semibold text-blue-700 mb-2'>Pembayaran</h3>
 
 
+            
+            <Tooltip content="Tambah Pembayaran Baru">
+              <Button size='sm' color='primary' isIconOnly variant='shadow' onClick={() => setCreateModal(true)}><FaPlus /></Button>
+            </Tooltip>
+
             {isLoading &&
               <div className='w-full flex items-center justify-center p-5'>
                 <span className="loader"></span>
               </div>
             }
-            <Tooltip content="Tambah Pembayaran Baru">
-              <Button size='sm' color='primary' isIconOnly variant='shadow' onClick={() => setCreateModal(true)}><FaPlus /></Button>
-            </Tooltip>
 
 
-            <div className='mt-3 flex gap-3 flex-col'>
+            <div className='mt-3 flex gap-3 flex-col bg-blue-100 p-5 rounded-2xl'>
               {
                 table?.data.map((item, index) => (
                   <Link to={'/dashboard/payment/detail/' + item.id} className='bg-white hover:bg-blue-100 p-2 rounded-md flex justify-between items-center shadow-lg shadow-violet-700/20 transition-all ease-in-out' key={index}>
@@ -222,14 +226,14 @@ function Payment() {
           <Tab key="group" title="Group Pembayaran">
             <div>
               <h3 className='text-lg font-semibold text-blue-700 mb-2'>Group Pembayaran</h3>
-              <div className='py-3 rounded-xl bg-white'>
+              <div className='py-3 rounded-xl '>
                 <Tooltip content="Tambah group pembayaran baru">
                   <Button size='sm' color='primary' isIconOnly variant='shadow' onClick={() => setGroupModal(true)}><FaPlus /></Button>
                 </Tooltip>
-                <div className='mt-4 flex flex-col gap-4 '>
+                <div className='mt-4 flex flex-col gap-4 rounded-2xl p-5 bg-blue-100'>
                   {groupPayment?.data.map((item, index) => (
                     <div key={index} className='flex items-center gap-2 justify-start outline outline-1 outline-gray-100 p-2 rounded-md shadow-lg shadow-violet-700/20 bg-white text-slate-700 cursor-pointer hover:bg-slate-100 transition-all ease-in' onClick={() => navigate(`/dashboard/payment/group-payment/${item.id}`)}>
-                      <div className='bg-white rounded-md p-3 mr-2 text-violet-800 shadow-md shadow-violet-700/10'>
+                      <div className='bg-white rounded-md p-3 mr-2 text-violet-800 shadow-violet-700/10'>
                         <MdGroups2 className='text-xl' />
                       </div>
                       <div className='text-left'>
@@ -249,6 +253,9 @@ function Payment() {
                 <Pagination className='my-4' showControls total={groupPage} initialPage={1} page={groupPayment?.current_page} onChange={e => changeGroupTable(e)} isCompact />
               </div>
             </div>
+          </Tab>
+          <Tab key="administrasi" title="Administrasi">
+            <Administrasi/>
           </Tab>
 
         </Tabs>

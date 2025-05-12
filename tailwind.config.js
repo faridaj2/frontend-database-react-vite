@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-const { nextui } = require("@nextui-org/react");
+const { nextui, colors } = require("@nextui-org/react");
 export default {
   content: [
     "./index.html",
@@ -10,9 +10,23 @@ export default {
     fontFamily: {
       'sans': ['"Inter"', 'sans-serif'],
       'times': ['"Arial"', 'serif'],
+      'lexend' : ['Lexend', 'sans-serif']
     },
-    extend: {},
+
+    extend: {
+      colors: {
+        primary: '#338ef7'
+      }
+    },
   },
-  plugins: [nextui()],
+  plugins: [nextui({
+    themes:{
+      light: {
+        colors: {
+         
+        }
+      }
+    }
+  })],
 }
 

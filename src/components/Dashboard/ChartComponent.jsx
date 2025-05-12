@@ -54,12 +54,13 @@ function ChartComponent({ startYear, endYear }) {
         }
     });
     return (
-        <div className='bg-white border rounded-md m-2 mt-4 p-2'>
+        <div className='bg-white rounded-2xl m-2 mt-4 p-2'>
             <Chart
                 options={chartData.options}
                 series={chartData.series}
                 type="area"
                 height={350}
+
             />
         </div>
     )
