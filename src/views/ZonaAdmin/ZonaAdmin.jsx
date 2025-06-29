@@ -156,7 +156,7 @@ function ZonaAdmin() {
                 <div className='w-full flex justify-end my-2'>
                     <Button color='primary' onClick={() => setModalCreate(true)}>Tambah User</Button>
                 </div>
-                <Table aria-label='Tabel user akun'>
+                <Table aria-label='Tabel user akun' isStriped >
                     <TableHeader>
                         <TableColumn>
                             User
@@ -167,7 +167,7 @@ function ZonaAdmin() {
                     </TableHeader>
                     <TableBody>
                         {listUser?.map((item, index) => (
-                            <TableRow key={index}>
+                            <TableRow key={index} className='p-2'>
                                 <TableCell>
                                     <div>
                                         <div>
@@ -181,9 +181,9 @@ function ZonaAdmin() {
                                     </div>
                                 </TableCell>
                                 <TableCell>
-                                    <div className='flex gap-1'>
-                                        <Button color='primary' onPress={() => openModalSetting(item)} size='sm' isIconOnly isDisabled={user.id === item.id}><FaGear /> </Button>
-                                        <Button color='danger' size='sm' isIconOnly isDisabled={user.id === item.id} onClick={() => deleteAccount(item)}><RiDeleteBack2Fill /> </Button>
+                                    <div className='flex gap-1 items-center gap-2 text-blue-700'>
+                                        <button  onClick={() => openModalSetting(item)} size='sm' isIconOnly isDisabled={user.id === item.id}><FaGear /> </button>
+                                        <button disabled={user.id === item.id} onClick={() => deleteAccount(item)}><RiDeleteBack2Fill /> </button>
                                     </div>
                                 </TableCell>
                             </TableRow>
@@ -207,7 +207,7 @@ function ZonaAdmin() {
                                 <Divider className='mt-2' />
                                 <div className=''>
                                     {formal?.map(item => (
-                                        <div className='flex justify-between items-center p-3 bg-blue-100 hover:bg-blue-200' key={item.key}>
+                                        <div className='flex justify-between items-center p-3 odd:bg-blue-50 hover:bg-blue-200' key={item.key}>
                                             <div className='flex gap-3 items-center'>
                                                 <div className='p-2 rounded-md bg-white shadow'><GrGroup /></div>
                                                 <div className='font-medium'>
@@ -215,8 +215,8 @@ function ZonaAdmin() {
                                                 </div>
                                             </div>
                                             <div className='text-xl'>
-                                                <Button color='danger' isIconOnly className='text-xl' variant='bordered' size='sm' onClick={() => deleteFromArray(formal, setFormal, item.key, setIsSaveFormal)}>
-                                                    <TiDelete />
+                                                <Button color='danger' isIconOnly className='text-xl' variant='light' size='sm' onClick={() => deleteFromArray(formal, setFormal, item.key, setIsSaveFormal)}>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-trash2-icon lucide-trash-2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
                                                 </Button>
                                             </div>
                                         </div>
@@ -237,7 +237,7 @@ function ZonaAdmin() {
                                 <Divider className='mt-2' />
                                 <div className=''>
                                     {diniyah?.map(item => (
-                                        <div className='flex justify-between items-center p-3 bg-blue-100 hover:bg-blue-200' key={item.key}>
+                                        <div className='flex justify-between items-center p-3 odd:bg-blue-50 hover:bg-blue-200' key={item.key}>
                                             <div className='flex gap-3 items-center'>
                                                 <div className='p-2 rounded-md bg-white shadow'><GrGroup /></div>
                                                 <div className='font-medium'>
@@ -245,8 +245,8 @@ function ZonaAdmin() {
                                                 </div>
                                             </div>
                                             <div className='text-xl'>
-                                                <Button color='danger' isIconOnly className='text-xl' variant='bordered' size='sm' onClick={() => deleteFromArray(diniyah, setDiniyah, item.key, setIsSaveDiniyah)}>
-                                                    <TiDelete />
+                                                <Button color='danger' isIconOnly className='text-xl' variant='light' size='sm' onClick={() => deleteFromArray(diniyah, setDiniyah, item.key, setIsSaveDiniyah)}>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-trash2-icon lucide-trash-2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
                                                 </Button>
                                             </div>
                                         </div>
@@ -279,8 +279,8 @@ function ZonaAdmin() {
                                         </div>
                                     </div>
                                     <div className='text-xl'>
-                                        <Button color='danger' isIconOnly className='text-xl' variant='bordered' size='sm' onClick={() => deleteFromArray(kamar, setKamar, item.key, setIsSaveKamar)}>
-                                            <TiDelete />
+                                        <Button color='danger' isIconOnly className='text-xl' variant='light' size='sm' onClick={() => deleteFromArray(kamar, setKamar, item.key, setIsSaveKamar)}>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-trash2-icon lucide-trash-2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
                                         </Button>
                                     </div>
                                 </div>

@@ -107,7 +107,7 @@ export default function ModalAdministrasi({ modal, setModal, reset }) {
                                     <TableBody>
                                         {listKolom && listKolom.map((item, index) => (
                                             <TableRow key={`row` + index}>
-                                                <TableCell className='text-nowrap'>{item.nama_kolom}</TableCell>
+                                                <TableCell className='text-nowrap uppercase'>{item.nama_kolom}</TableCell>
                                                 <TableCell className='text-xs uppercase'>{!item.formal ? 'Semua' : item.formal}</TableCell>
                                                 <TableCell className='text-xs uppercase'>{!item.kelamin ? 'Semua' : item.kelamin.toUpperCase()}</TableCell>
                                                 <TableCell className='uppercase text-xs'>Rp. {addComa(item.harga)}</TableCell>

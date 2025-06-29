@@ -149,13 +149,13 @@ function Keamanan() {
                             exit={{ width: 0, opacity: 0 }}
                             transition={{ duration: 0.5, ease: 'easeInOut' }}
                         >
-                            <div className="border-1 p-2 rounded-xl mt-2 md:mt-0 md:ml-2 h-full">
+                            <div className="border-1 p-2 rounded-xl mt-2 md:mt-0 md:ml-2 h-full bg-white">
                                 <div>
                                     <div className="flex flex-col gap-2">
                                         {selected && selected.map((item, index) => (
-                                            <div className="bg-primary-50 p-2 rounded-xl flex justify-between items-center" key={`select-${item.id}`}>
+                                            <div className="bg-gray-200 p-2 rounded-xl flex justify-between items-center" key={`select-${item.id}`}>
                                                 <div>
-                                                    <div className="uppercase font-semibold text-primary">
+                                                    <div className="uppercase font-semibold">
                                                         {item.nama_siswa}
                                                     </div>
                                                     <div className="text-tiny text-gray-500">
@@ -168,24 +168,24 @@ function Keamanan() {
                                     </div>
                                     <Divider className="my-3" />
                                     <div className="flex items-center gap-2 cursor-pointer mb-2 relative justify-between" onClick={() => setPencarian(!pencarian)}>
-                                        <span className="text-primary text-tiny italic">Pencarian</span>
+                                        <span className="text-gray-900 text-tiny italic">Pencarian</span>
                                         <Divider className="w-2/3" />
-                                        <FaSearch className="text-tiny text-primary" />
+                                        <FaSearch className="text-tiny text-gray-900" />
                                     </div>
                                     <motion.div
                                         className="overflow-hidden"
                                         initial={{ height: 0 }}
                                         animate={{ height: pencarian ? 'auto' : 0 }}
                                     >
-                                        <Input color="primary" variant="flat" placeholder="Cari Siswa" value={search} onValueChange={setSearch} startContent={<FaSearch />} />
+                                        <Input variant="flat" placeholder="Cari Siswa" value={search} onValueChange={setSearch} startContent={<FaSearch />} />
                                         <div className="scroll overflow-y-auto max-h-44 my-2 grid grid-cols-1 gap-2">
                                             {siswa && siswa.map(item => (
-                                                <div className="border-1 p-3 rounded-md flex gap-4 items-center" key={item.id}>
+                                                <div className="border-1 p-3 rounded-md flex gap-4 items-center bg-gray-200" key={item.id}>
                                                     <div >
-                                                        <div className="uppercase font-semibold text-primary">
+                                                        <div className="uppercase font-semibold">
                                                             {item.nama_siswa}
                                                         </div>
-                                                        <div className="text-tiny text-gray-500">
+                                                        <div className="text-tiny text-gray-600">
                                                             {item.nis}
                                                         </div>
                                                     </div>
@@ -196,10 +196,10 @@ function Keamanan() {
                                         </div>
                                     </motion.div>
                                     <div className="mt-3">
-                                        <Textarea color="primary" placeholder="Jenis Pelanggaran" value={pelanggaran} onValueChange={setPelanggaran} />
-                                        <Input color="primary" placeholder="Poin" type="number" className="mt-2" value={poin} onValueChange={setPoin} />
+                                        <Textarea placeholder="Jenis Pelanggaran" value={pelanggaran} onValueChange={setPelanggaran} />
+                                        <Input placeholder="Poin" type="number" className="mt-2" value={poin} onValueChange={setPoin} />
                                         <I18nProvider locale="id-ID">
-                                            <DatePicker color="primary" className="mt-2" value={date} onChange={setDate} />
+                                            <DatePicker className="mt-2" value={date} onChange={setDate} />
                                         </I18nProvider>
                                         <Button className="w-full mt-2" color="primary" onClick={submitHandler}>Tambahkan</Button>
                                     </div>

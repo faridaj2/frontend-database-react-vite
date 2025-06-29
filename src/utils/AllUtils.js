@@ -61,7 +61,7 @@ const AllUtils = () => {
             input = input.toString();
         }
         let num = input.replace(/[^\d]/g, '');
-        num = num.replace(/^0+/, '');
+        num = num.replace(/^0+(?=\d)/, '');
         if (num === '') return '';
         num = num.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 

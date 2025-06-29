@@ -1,7 +1,7 @@
 import {  Modal,  ModalContent,  ModalHeader,  ModalBody,  ModalFooter, Input, Button} from "@nextui-org/react"
 import AuthUser from "../../utils/AuthUser"
 
-export default function ModalSelectStudent({modal, setModal, searchBar, students}){
+export default function ModalSelectStudent({modal, setModal, searchBar, students, reset}){
     const {http} = AuthUser()
     const onOpenChange = () => setModal(!modal)
     
@@ -9,6 +9,7 @@ export default function ModalSelectStudent({modal, setModal, searchBar, students
         http.post('/api/pspdb/add/listed', {
            id
         })
+        .then(r => reset())
     }
     return (
         <>

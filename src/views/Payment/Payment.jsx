@@ -6,6 +6,7 @@ import { Button, Divider, Tooltip, Pagination, Modal, ModalContent, ModalHeader,
 import DashboardTemplate from '../../components/DashboardTemplate'
 import ModalCreatePayment from '../../components/ModalCreatePayment'
 import Administrasi from '../../components/Payment/Administrasi'
+import ModalLaporan from '../../components/Payment/Laporan/ModalLaporan'
  
 
 
@@ -16,6 +17,7 @@ import { Link } from 'react-router-dom'
 import { GiCash } from "react-icons/gi"
 import { BsCalendar2MonthFill } from "react-icons/bs"
 import { MdGroups2 } from "react-icons/md"
+import { LuScroll } from "react-icons/lu";
 
 
 // Utilst
@@ -180,12 +182,12 @@ function Payment() {
         <Tabs aria-label="Options" color='primary'>
           <Tab key="pembayaran" title="Pembayaran">
             <h3 className='text-lg font-semibold text-blue-700 mb-2'>Pembayaran</h3>
-
-
-            
-            <Tooltip content="Tambah Pembayaran Baru">
-              <Button size='sm' color='primary' isIconOnly variant='shadow' onClick={() => setCreateModal(true)}><FaPlus /></Button>
-            </Tooltip>
+            <div className='flex gap-2'>
+              <Tooltip content="Tambah Pembayaran Baru">
+                <Button size='sm' color='primary' isIconOnly variant='shadow' onClick={() => setCreateModal(true)}><FaPlus /></Button>
+              </Tooltip>
+              <Button size='sm' color='primary' variant='shadow' onClick={() => setModalLaporan(true)}><LuScroll /> Laporan</Button>
+            </div>
 
             {isLoading &&
               <div className='w-full flex items-center justify-center p-5'>
@@ -225,7 +227,7 @@ function Payment() {
           </Tab>
           <Tab key="group" title="Group Pembayaran">
             <div>
-              <h3 className='text-lg font-semibold text-blue-700 mb-2'>Group Pembayaran</h3>
+              <h3 className='text-lg font-semibold text-blue-700'>Group Pembayaran</h3>
               <div className='py-3 rounded-xl '>
                 <Tooltip content="Tambah group pembayaran baru">
                   <Button size='sm' color='primary' isIconOnly variant='shadow' onClick={() => setGroupModal(true)}><FaPlus /></Button>
@@ -262,7 +264,7 @@ function Payment() {
       </div>
       <ModalGroupPembayaran modal={groupModal} setModal={setGroupModal} toastInfo={toastInfo} toastSuccess={toastSuccess} refresh={getAllGroupPayment} />
       <ModalCreatePayment modal={createModal} setModal={setCreateModal} toastInfo={toastInfo} toastSuccess={toastSuccess} refresh={getAllTabelPayment} />
-
+      <ModalLaporan modal={modalLaporan} setModal={setModalLaporan}/>
     </DashboardTemplate>
   )
 }

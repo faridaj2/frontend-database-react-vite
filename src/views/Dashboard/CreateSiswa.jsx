@@ -126,74 +126,86 @@ function CreateSiswa() {
 
                 <form action="" className='w-full'>
 
-                    <div className='max-w-lg w-full flex gap-2 flex-col'>
-                        <Input label="Masukkan nama" size='sm' onValueChange={setName} type='text' />
-                        <Input label="Masukkan NIK" size='sm' onValueChange={setNik} type='number' />
-                        <Input label="Masukkan NISN" size='sm' onValueChange={setNisn} type='number' />
-                        <Input label="Masukkan No. KK" size='sm' onValueChange={setKk} type='number' />
-                        <Input label="Masukkan Asal Sekolah" size='sm' onValueChange={setAsalSekolah} type='text' />
-                        <Input label="Masukkan E-Mail" size='sm' onValueChange={setEmail} type='email' />
-                        <Input label="Masukkan KIP" size='sm' onValueChange={setKip} type='number' />
-                        <Input label="Masukkan Tempat Lahir" size='sm' onValueChange={setTptLahir} type='text' />
-                        <Input type='date' label="Masukkan Tanggal Lahir" onChange={(e) => setTglLahir(e.target.value)} />
-                        <Select
-                            label="Pilih Jenis Kelamin" size='sm'
-                            className="w-full"
-                            onChange={(e) => setKelamin(e.target.value)}
-                        >
+                    <div className='w-full flex gap-10 flex-col'>
+                        <div className='grid grid-cols-1 md:grid-cols-2 gap-2'>
+                            <div className='font-semibold text-gray-700 tracking-wide text-sm px-2'>Data diri</div>
+                            <Input className='col-span-2' label="Masukkan nama" size='sm' onValueChange={setName} type='text' />
+                            <Input label="Masukkan NIK" size='sm' onValueChange={setNik} type='number' />
+                            <Input label="Masukkan NISN" size='sm' onValueChange={setNisn} type='number' />
+                            <Input label="Masukkan No. KK" size='sm' onValueChange={setKk} type='number' />
+                            <Input label="Masukkan Asal Sekolah" size='sm' onValueChange={setAsalSekolah} type='text' />
+                            <Input label="Masukkan E-Mail" size='sm' onValueChange={setEmail} type='email' />
+                            <Input label="Masukkan KIP" size='sm' onValueChange={setKip} type='number' />
+                            <Input className='col-span-2' label="Masukkan Tempat Lahir" size='sm' onValueChange={setTptLahir} type='text' />
+                            <Input className="col-span-2" type='date' label="Masukkan Tanggal Lahir" onChange={(e) => setTglLahir(e.target.value)} />
+                        </div>
+                        <div className='grid grid-cols-2 md:grid-cols-4 items-center gap-2'>
+                            <div className='font-semibold text-gray-700 tracking-wide text-sm px-2 col-span-2 md:col-span-4'>Sekolah, Diniyah</div>
+                            <Select
+                                label="Pilih Jenis Kelamin"
+                                className="w-full"
+                                onChange={(e) => setKelamin(e.target.value)}
+                            >
 
-                            <SelectItem key="L" value="L">
-                                Laki Laki
-                            </SelectItem>
-                            <SelectItem key="P" value="P">
-                                Perempuan
-                            </SelectItem>
+                                <SelectItem key="L" value="L">
+                                    Laki Laki
+                                </SelectItem>
+                                <SelectItem key="P" value="P">
+                                    Perempuan
+                                </SelectItem>
 
-                        </Select>
-                        <Select label="Tingkatan Formal" onChange={(e) => setFormal(e.target.value)}>
-                            {formal?.map((item) => (
-                                <SelectItem key={item.key} value={item.label}>
-                                    {item.label}
-                                </SelectItem>
-                            ))}
-                        </Select>
-                        <Select label="Tingkatan Diniyah" onChange={(e) => setDiniyah(e.target.value)}>
-                            {diniyah?.map((item) => (
-                                <SelectItem key={item.key} value={item.label}>
-                                    {item.label}
-                                </SelectItem>
-                            ))}
-                        </Select>
-                        <Select label="Pilih kamar" onChange={(e) => setKmr(e.target.value)}>
-                            {kamar?.map(item => (
-                                <SelectItem key={item.key} value={item.key}>
-                                    {item.label}
-                                </SelectItem>
-                            ))}
+                            </Select>
+                            <Select label="Tingkatan Formal" onChange={(e) => setFormal(e.target.value)}>
+                                {formal?.map((item) => (
+                                    <SelectItem key={item.key} value={item.label}>
+                                        {item.label}
+                                    </SelectItem>
+                                ))}
+                            </Select>
+                            <Select label="Tingkatan Diniyah" onChange={(e) => setDiniyah(e.target.value)}>
+                                {diniyah?.map((item) => (
+                                    <SelectItem key={item.key} value={item.label}>
+                                        {item.label}
+                                    </SelectItem>
+                                ))}
+                            </Select>
+                            <Select label="Pilih kamar" onChange={(e) => setKmr(e.target.value)}>
+                                {kamar?.map(item => (
+                                    <SelectItem key={item.key} value={item.key}>
+                                        {item.label}
+                                    </SelectItem>
+                                ))}
 
-                        </Select>
-                        <Textarea label="Masukkan Alamat" onValueChange={setAlamat} />
-                        <Input label="Masukkan Nama Ayah" size='sm' onValueChange={setAyah} type='text' />
-                        <Input label="Masukkan No Ayah" size='sm' onValueChange={setNoAyah} type='number' />
-                        <Input label="Masukkan Nama Ibu" size='sm' onValueChange={setIbu} type='text' />
-                        <Input label="Masukkan no Ibu" size='sm' onValueChange={setNoIbu} type='number' />
-                        <Input
-                            type='date'
-                            label="Tahun Masuk"
-                            onChange={(e) => getNis(e.target.value)}
-                            classNames={{
-                                input: ['text-blue-900']
-                            }}
-                        />
-                        <Tooltip content="NIS Otomatis">
-                            <Input label="NIS SISWA" isDisabled value={nis} />
-                        </Tooltip>
+                            </Select>
+                        </div>
+                        <div className='grid grid-cols-2 gap-2'>
+                            <div className='font-semibold text-gray-700 tracking-wide text-sm px-2 col-span-2'>Alamat & Detail Orang Tua</div>
+                            <Textarea className='col-span-2' label="Masukkan Alamat" onValueChange={setAlamat} />
+                            <Input label="Masukkan Nama Ayah" size='sm' onValueChange={setAyah} type='text' />
+                            <Input label="Masukkan No Ayah" size='sm' onValueChange={setNoAyah} type='number' />
+                            <Input label="Masukkan Nama Ibu" size='sm' onValueChange={setIbu} type='text' />
+                            <Input label="Masukkan no Ibu" size='sm' onValueChange={setNoIbu} type='number' />
+                        </div>
+                        <div className='grid grid-cols-2 gap-2'>
+                            <div className='font-semibold text-gray-700 tracking-wide text-sm px-2 col-span-2'>Detail tambahan & NIS</div>
+                            <Input
+                                type='date'
+                                label="Tahun Masuk"
+                                onChange={(e) => getNis(e.target.value)}
+                                classNames={{
+                                    input: ['text-blue-900']
+                                }}
+                            />
+                            <Tooltip content="NIS Otomatis">
+                                <Input label="NIS SISWA" isDisabled value={nis} />
+                            </Tooltip>
+                        </div>
                     </div>
-                    <div className='flex gap-2 mt-2 justify-end max-w-lg w-full'>
+                    <div className='flex flex-col md:flex-row gap-2 mt-4 items-center'>
                         <Tooltip content="Kembali ke halaman sebelumnya">
-                            <Button color='danger' onClick={() => navigate('/dashboard/data-santri/')}>Batal</Button>
+                            <Button className='w-full md:w-24' color='danger' onClick={() => navigate('/dashboard/data-santri/')}>Batal</Button>
                         </Tooltip>
-                        <Button color='primary' onClick={submitForm} isLoading={isLoading} isDisabled={isDisabled}>Simpan</Button>
+                        <Button className='w-full md:w-24' color='primary' onClick={submitForm} isLoading={isLoading} isDisabled={isDisabled}>Simpan</Button>
                     </div>
 
                 </form>

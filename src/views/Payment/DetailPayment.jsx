@@ -210,7 +210,7 @@ function DetailPayment() {
             })
     }
     const addToMeta = () => {
-        if (!selectedMonth || !pembayaranBulanan) return
+        if (!selectedMonth) return
         let array;
         if (meta) {
             array = [...meta]
@@ -219,7 +219,7 @@ function DetailPayment() {
         }
 
         const month = selectedMonth
-        const price = pembayaranBulanan.replace(/\./g, '')
+        const price = pembayaranBulanan ? pembayaranBulanan.replace(/\./g, '') : 0
 
         if (!array.some(item => item.month === month)) {
             const data = { month: month, price: price }
@@ -318,7 +318,7 @@ function DetailPayment() {
                 animate={{ left: settings ? '0' : '100%' }}
                 transition={{ duration: .2, ease: 'easeInOut' }}
             >
-                <div className='w-full md:w-96 shadow bg-white h-full overflow-scroll hideScrollBar'>
+                <div className='w-full md:w-96 bg-white h-full overflow-scroll hideScrollBar'>
                     <div className='p-3 flex justify-end'>
                         <Button color='primary' size='sm' variant='shadow' onClick={closeSettings} isIconOnly>{!settings ? <FaGear /> : <IoClose />}</Button>
                     </div>
@@ -362,7 +362,6 @@ function DetailPayment() {
                                         )}
                                     </Select>
                                     <Input variant='underlined' value={pembayaranBulanan} onValueChange={setPembayaranBulanan} label="Masukkan jumlah" startContent={'Rp.'} endContent={<Button size='sm' color='primary' onClick={addToMeta} isIconOnly variant='shadow'><FaPlus /></Button>} />
-
                                 </div>
                             </div>
 
@@ -385,7 +384,7 @@ function DetailPayment() {
             </motion.div>
             <div className='flex flex-col md:flex-row justify-between mb-3 gap-2 md:items-center'>
                 <div className=''>
-                    <div className='text-xl font-bold text-primary truncate'>
+                    <div className='text-xl font-bold text-primary truncate text-center md:text-left'>
                         {namaPembayaran}
                     </div>
                 </div>
@@ -404,8 +403,7 @@ function DetailPayment() {
             >
                 <div className='w-full'>
 
-                    <Card className='text-white bg-transparent'>
-                        <div className="absolute top-0 z-[-2] h-screen w-screen bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] bg-[size:20px_20px]"></div>
+                    <Card className='bg-blue-100'>
                         <CardHeader className='font-bold text-2xl flex justify-between'>
                             Detail
                         </CardHeader>
@@ -416,7 +414,7 @@ function DetailPayment() {
                                         <FaChartLine className='text-xl' />
                                     </div>
                                     <div>
-                                        <h4 className='text-tiny text-white/70 font-semibold'>Nama Pembayaran</h4>
+                                        <h4 className='text-tiny text-gray-500 font-semibold'>Nama Pembayaran</h4>
                                         <h2 className='text-sm font-semibold uppercase'>{namaPembayaran}</h2>
                                     </div>
                                 </div>
@@ -426,7 +424,7 @@ function DetailPayment() {
                                         <FaChartLine className='text-xl' />
                                     </div>
                                     <div>
-                                        <h4 className='text-tiny text-white/70 font-semibold'>Deskripsi</h4>
+                                        <h4 className='text-tiny text-gray-500 font-semibold'>Deskripsi</h4>
                                         <h2 className='text-sm font-semibold uppercase'>{desc}</h2>
 
                                     </div>
@@ -437,7 +435,7 @@ function DetailPayment() {
                                         <FaChartLine className='text-xl' />
                                     </div>
                                     <div>
-                                        <h4 className='text-tiny text-white/70 font-semibold'>Jenis Pembayaran</h4>
+                                        <h4 className='text-tiny text-gray-500 font-semibold'>Jenis Pembayaran</h4>
                                         <h2 className='text-sm font-semibold'>{bulanan === 'bulanan' ? 'Bulanan' : 'Kontan '}</h2>
                                     </div>
                                 </div>
@@ -447,7 +445,7 @@ function DetailPayment() {
                                         <FaChartLine className='text-xl' />
                                     </div>
                                     <div>
-                                        <h4 className='text-tiny text-white/70 font-semibold'>Tanggal</h4>
+                                        <h4 className='text-tiny text-gray-500 font-semibold'>Tanggal</h4>
                                         {bulanan === "bulanan" ?
                                             <h2 className='text-sm font-semibold'>{changeDateFormat(startDate)} - {changeDateFormat(endDate)}</h2> :
                                             <h2 className='text-sm font-semibold'>{tenggat}</h2>
@@ -460,8 +458,7 @@ function DetailPayment() {
                     </Card>
                 </div>
                 <div className='w-full'>
-                    <Card className='bg-transparent text-white'>
-                        <div className="absolute top-0 z-[-2] h-screen w-screen bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] bg-[size:20px_20px]"></div>
+                    <Card className='bg-blue-100'>
                         <CardHeader className='font-bold text-2xl flex justify-between'>
                             Tambahan
                         </CardHeader>
@@ -471,7 +468,7 @@ function DetailPayment() {
                                     <GiMoneyStack className='text-xl' />
                                 </div>
                                 <div>
-                                    <h4 className='text-tiny text-white/70 font-semibold'>Jumlah pembayaran {bulanan === 'bulanan' && 'per bulan'}</h4>
+                                    <h4 className='text-tiny text-gray-500 font-semibold'>Jumlah pembayaran {bulanan === 'bulanan' && 'per bulan'}</h4>
                                     <h2 className='text-sm font-semibold'>Rp. {addComa(defaultPrice)}</h2>
                                 </div>
                             </div>
@@ -480,7 +477,7 @@ function DetailPayment() {
                                     <GiMoneyStack className='text-xl' />
                                 </div>
                                 <div>
-                                    <h4 className='text-tiny text-white/70 font-semibold'>Group Pembayaran</h4>
+                                    <h4 className='text-tiny text-gray-500 font-semibold'>Group Pembayaran</h4>
                                     <h2 className='text-sm font-semibold'>{group.find(item => item.id === parseInt(groupId)) && group.find(item => item.id === parseInt(groupId)).group_name}</h2>
                                 </div>
                             </div>
@@ -498,7 +495,7 @@ function DetailPayment() {
                                                         <MdDateRange className='text-xl' />
                                                     </div>
                                                     <div>
-                                                        <h4 className='text-tiny text-white/70 font-semibold'>{item.month}</h4>
+                                                        <h4 className='text-tiny text-gray-500 font-semibold'>{item.month}</h4>
                                                         <h2 className='text-sm font-semibold'>Rp. {addComa(item.price)}</h2>
                                                     </div>
                                                 </div>
@@ -541,8 +538,8 @@ function DetailPayment() {
                             <TableRow key={item.id}>
                                 <TableCell className='text-nowrap'>{item.nama_siswa}</TableCell>
                                 <TableCell>{item.nis}</TableCell>
-                                <TableCell>{item.formal}</TableCell>
-                                <TableCell>{item.diniyah}</TableCell>
+                                <TableCell className='uppercase'>{item.formal}</TableCell>
+                                <TableCell className='uppercase'>{item.diniyah}</TableCell>
                                 <TableCell><Button size='sm' className='hover:-translate-y-1 transition-all' color='primary' variant='shadow' onClick={() => navigate(`/dashboard/payment/payment-detail/${id}/${item.id}`)}>detail</Button></TableCell>
                             </TableRow>
                         ))}

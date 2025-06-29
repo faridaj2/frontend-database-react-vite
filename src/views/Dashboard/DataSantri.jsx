@@ -4,7 +4,7 @@ import DashboardTemplate from '../../components/DashboardTemplate'
 import { Card, CardBody, Chip, Select, SelectItem } from '@nextui-org/react'
 import { Button } from '@nextui-org/react'
 import { IoAddSharp } from "react-icons/io5";
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Avatar, Tooltip, Input, useDisclosure } from "@nextui-org/react"
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Avatar, Tooltip, Input, useDisclosure, Link} from "@nextui-org/react"
 import { Pagination } from "@nextui-org/pagination";
 import { HiOutlineEye } from "react-icons/hi";
 import { TbEditCircle } from "react-icons/tb";
@@ -24,6 +24,10 @@ import * as XLSX from 'xlsx';
 function DataSantri() {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const navigate = useNavigate();
+    const navigateP = (e, link) => {
+        e.preventDefault()
+        navigate(link)
+    }
 
     const { http, user, logout } = AuthUser()
 
@@ -171,13 +175,11 @@ function DataSantri() {
                             classNames={{
                                 label: "text-black/50 dark:text-white/90",
                                 input: [
-                                    "bg-transparent",
                                     "text-black/90 dark:text-white/90",
                                     "placeholder:text-default-700/50 dark:placeholder:text-white/60",
                                 ],
-                                innerWrapper: "bg-transparent",
                                 inputWrapper: [
-                                    "bg-default-200/50",
+                                    "bg-white",
                                     "dark:bg-default/60",
                                     "backdrop-blur-xl",
                                     "backdrop-saturate-200",
@@ -237,13 +239,11 @@ function DataSantri() {
                                     <TableCell >
                                         <div className='flex items-center gap-2'>
                                             <Tooltip content="Details">
-                                                <Button isIconOnly color='warning' variant='shadow' size='sm' onClick={() => navigate(`/dashboard/data-santri/detail/${siswa.nis}`)} className='text-xl text-white'><HiOutlineEye /></Button>
+                                                <Link onClick={(e) => navigateP(e, `/dashboard/data-santri/detail/${siswa.nis}`)} href={`/dashboard/data-santri/detail/${siswa.nis}`} className='text-xl text-green-500'><HiOutlineEye /></Link>
                                             </Tooltip>
-                                            <Tooltip content="Edit" className={checkUser()}>
-                                                <Button isIconOnly color='primary' variant='shadow' size='sm' className={`text-xl ` + (checkUser())} onClick={() => navigate(`/dashboard/data-santri/edit/${siswa.nis}`)}><TbEditCircle /></Button>
-                                            </Tooltip>
+                                            <Link className={`${checkUser()}`} onClick={(e) => navigateP(e, `/dashboard/data-santri/edit/${siswa.nis}`)} href={`/dashboard/data-santri/edit/${siswa.nis}`}><TbEditCircle /></Link>
                                             <Tooltip content="Hapus" className={checkUser()}>
-                                                <Button className={`text-xl ` + (checkUser())} onClick={() => confirmDelete(siswa)} size='sm' variant='shadow' isIconOnly color='danger'><PiTrashSimpleBold /></Button>
+                                                <button className={`text-xl ` + (checkUser())} onClick={() => confirmDelete(siswa)} size='sm' variant='shadow' isIconOnly color='danger'><PiTrashSimpleBold /></button>
                                             </Tooltip>
 
                                         </div>

@@ -25,11 +25,13 @@ import Keamanan from "./views/Keamanan/Keamanan";
 import DetailKeamanan from "./views/Keamanan/DetailKeamanan";
 import RiwayatKeamanan from "./views/Keamanan/RiwayatKeamanan";
 import Laporan from "./views/Payment/Laporan";
+import LaporanAdministrasi from "./views/Payment/LaporanAdministrasi";
 
 import { Provider } from "react-redux";
 import store from "./store/store";
 
 import { NextUIProvider } from "@nextui-org/react";
+import LaporanBulk from "./views/Payment/LaporanBulk";
 
 function App() {
   return (
@@ -89,6 +91,16 @@ function App() {
               element={
                 <PrivateRoute element={DetailUserPayment} roles="keuangan" />
               }
+            />
+            <Route
+              path="/dashboard/payment/laporan/bulk/:data"
+              element={<PrivateRoute element={LaporanBulk} />}
+              roles="keuangan"
+            />
+            <Route
+              path="/dashboard/payment/laporan/administrasi/:data"
+              element={<PrivateRoute element={LaporanAdministrasi} />}
+              roles="keuangan"
             />
             <Route
               path="/dashboard/payment/laporan/:data"

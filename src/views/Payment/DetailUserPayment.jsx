@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 // Component
 import DashboardTemplate from "../../components/DashboardTemplate";
@@ -184,7 +184,7 @@ function DetailUserPayment() {
         if (find) {
             return addComa(find.price);
         } else {
-            return "--";
+            return "0";
         }
     };
     // get DOP
@@ -193,7 +193,7 @@ function DetailUserPayment() {
         if (find) {
             return find.dop;
         } else {
-            return "--";
+            return "0";
         }
     };
 
@@ -369,7 +369,7 @@ function DetailUserPayment() {
                 <ModalSeeDetail
                     modal={detailModal}
                     setModal={setModalDetail}
-                    data={{ paymentId, siswaId, month: dataDetailModal }}
+                    data={{ paymentId, siswaId, month: dataDetailModal, siswa, nama: data.name }}
                     fn={{ getTotal, getStatus, getDop }}
                 />
             )}

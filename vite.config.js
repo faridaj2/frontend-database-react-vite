@@ -7,12 +7,12 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "http://backend.dev/",
+        target: "https://backend.dev",
         changeOrigin: true,
         rewrite: (path) => path,
       },
       "/storage": {
-        target: "http://backend.dev/",
+        target: "https://backend.dev",
         changeOrigin: true,
         rewrite: (path) => path,
       },

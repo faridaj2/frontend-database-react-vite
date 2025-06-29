@@ -30,13 +30,17 @@
   background-color: #5c5fbb;
 }
 
+/* Print Area */
+
+
+
 /* Loading */
 .loader{
         display: block;
         position: relative;
         height: 12px;
         width: 80%;
-        border: 1px solid #444a4f;
+        border: 1px solid #9ca8b3;
         border-radius: 10px;
         overflow: hidden;
         background-color: white;
